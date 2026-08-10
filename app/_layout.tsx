@@ -9,12 +9,13 @@ export default function RootLayout() {
   return (
     <>
       <Stack screenOptions={{
-        headerShown: false,
-        contentStyle: {
-          marginTop: insets.top,
-          marginBottom: insets.bottom,
-        }
-      }} />
+          headerShown: false,
+          contentStyle: {
+            marginTop: insets.top,
+            marginBottom: insets.bottom,
+          }
+        }}
+      />
       <StatusBar style="auto" />
     </>
   );
