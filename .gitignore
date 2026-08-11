@@ -43,3 +43,6 @@ app-example
 # generated native folders
 /ios
 /android
+
+# Android module build outputs
+/modules/*/android/build/
