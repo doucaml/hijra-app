@@ -1,13 +1,9 @@
 package expo.modules.appwidgetandroid.TodayDate
 
-import android.appwidget.AppWidgetManager
 import android.content.Context
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import expo.modules.appwidgetandroid.data.setUpAlarm
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class Receiver: GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget

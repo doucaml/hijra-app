@@ -15,20 +15,38 @@ import androidx.glance.background
 import androidx.glance.color.ColorProvider
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
+import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxSize
-import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
+import androidx.glance.preview.ExperimentalGlancePreviewApi
+import androidx.glance.preview.Preview
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import expo.modules.appwidgetandroid.R
 import expo.modules.appwidgetandroid.data.AppDate
 
-class Widget: GlanceAppWidget() {
+class Widget : GlanceAppWidget() {
+    private val background = ColorProvider(
+        day = Color(0xFFFFF9ED),
+        night = Color(0xFFF1ECE2)
+    )
+    private val accent = ColorProvider(
+        day = Color(0xFFB87828),
+        night = Color(0xFFA7671F)
+    )
+    private val primaryText = ColorProvider(
+        day = Color(0xFF203A36),
+        night = Color(0xFF203A36)
+    )
+    private val secondaryText = ColorProvider(
+        day = Color(0xFF6B8179),
+        night = Color(0xFF687B73)
+    )
+
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val appDate = AppDate()
 
@@ -40,33 +58,28 @@ class Widget: GlanceAppWidget() {
     @Composable
     fun WidgetContent(enDate: String, monthInArabic: String) {
         Column(
-            GlanceModifier
-                .fillMaxSize(),
+            modifier = GlanceModifier
+                .fillMaxSize()
+                .background(background)
+                .cornerRadius(20.dp)
+                .padding(14.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalAlignment = Alignment.CenterHorizontally
-
         ) {
             TextContent(
-                monthInArabic,
-                color = ColorProvider(Color.White, Color.White),
+                text = monthInArabic,
+                color = accent,
                 fontWeight = FontWeight.Bold,
-                textFontSize = 20.sp,
-                modifier = GlanceModifier
-                    .background(R.color.teal_700)
-                    .padding(vertical = 4.dp, horizontal = 6.dp)
+                textFontSize = 26.sp
             )
 
-            Spacer(
-                GlanceModifier
-                    .height(4.dp)
-            )
+            Spacer(modifier = GlanceModifier.height(3.dp))
 
             TextContent(
-                enDate.uppercase(),
-                modifier = GlanceModifier
-                    .background(Color.White)
-                    .padding(6.dp)
-                    .fillMaxWidth()
+                text = "${enDate.uppercase()} AH",
+                color = primaryText,
+                fontWeight = FontWeight.Bold,
+                textFontSize = 20.sp
             )
         }
     }
@@ -75,12 +88,12 @@ class Widget: GlanceAppWidget() {
     private fun TextContent(
         text: String,
         fontWeight: FontWeight = FontWeight.Normal,
-        color: ColorProvider = ColorProvider(Color.Black, Color.Black),
+        color: ColorProvider = primaryText,
         textFontSize: TextUnit = 14.sp,
-        modifier: GlanceModifier = GlanceModifier.Companion
+        modifier: GlanceModifier = GlanceModifier
     ) {
         Text(
-            text,
+            text = text,
             style = TextStyle(
                 color = color,
                 fontWeight = fontWeight,
@@ -88,7 +101,24 @@ class Widget: GlanceAppWidget() {
                 textAlign = TextAlign.Center
             ),
             modifier = modifier
-                .cornerRadius(12.dp)
         )
+    }
+
+    @OptIn(ExperimentalGlancePreviewApi::class)
+    @Composable
+    @Preview(widthDp = 300, heightDp = 160)
+    fun WidgetPreview() {
+        val appDate = AppDate()
+
+        Row(
+            modifier = GlanceModifier
+                .fillMaxSize()
+                .background(Color(0xFFE7E0D4))
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            WidgetContent(appDate.dateStr, appDate.arMonthStr)
+        }
     }
 }
