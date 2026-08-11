@@ -15,7 +15,19 @@ export default function RootLayout() {
             marginBottom: insets.bottom,
           }
         }}
-      />
+      >
+        <Stack.Screen
+          name="(bottom-sheets)"
+          options={{
+            presentation: "formSheet",
+            contentStyle: {
+              marginTop: 0
+            },
+            sheetAllowedDetents: [0.5, 0.8]
+          }}
+        />
+      </Stack>
+
       <StatusBar style="auto" />
     </>
   );

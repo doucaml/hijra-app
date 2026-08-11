@@ -1,3 +1,50 @@
 {
-
+  "1": {
+    "name": "Muharram",
+    "description": "Muharram is the first month of the Hijri year and one of the four sacred months in Islam. It is a time to reflect on the passage of time, renew good intentions, and increase acts of worship and compassion. The tenth day, Ashoura, has special significance in Islamic tradition."
+  },
+  "2": {
+    "name": "Safar",
+    "description": "Safar is the second month of the Hijri year. Islam rejects the belief that the month itself brings misfortune, and Muslims are encouraged to place their trust in Allah rather than in omens. It is a month like any other for worship, good deeds, and seeking beneficial knowledge."
+  },
+  "3": {
+    "name": "Rabi al-Awwal",
+    "description": "Rabi al-Awwal is the third month of the Hijri year. It is associated in Islamic history with the life and migration of the Prophet Muhammad ﷺ, and many Muslims use the month to study his character, mercy, and teachings."
+  },
+  "4": {
+    "name": "Rabi al-Thani",
+    "description": "Rabi al-Thani is the fourth month of the Hijri year. It offers an opportunity to continue reflecting on the Prophet's example and to build consistent habits of prayer, remembrance, learning, and service."
+  },
+  "5": {
+    "name": "Jumada al-Awwal",
+    "description": "Jumada al-Awwal is the fifth month of the Hijri year. As with every month, it is a time to remain mindful of Allah, care for others, and turn ordinary days into opportunities for gratitude and good deeds."
+  },
+  "6": {
+    "name": "Jumada al-Thani",
+    "description": "Jumada al-Thani is the sixth month of the Hijri year. It is a month for steady worship and reflection, with an emphasis on sincerity, patience, generosity, and maintaining good conduct throughout the year."
+  },
+  "7": {
+    "name": "Rajab",
+    "description": "Rajab is the seventh month of the Hijri year and one of the four sacred months. Muslims are encouraged to honor its sanctity by avoiding wrongdoing, increasing remembrance and supplication, and preparing their hearts for the months of worship ahead."
+  },
+  "8": {
+    "name": "Sha'ban",
+    "description": "Sha'ban is the eighth month of the Hijri year and precedes Ramadan. It is traditionally regarded as a time to prepare spiritually for fasting, deepen one's relationship with the Quran, make sincere repentance, and increase voluntary worship."
+  },
+  "9": {
+    "name": "Ramadan",
+    "description": "Ramadan is the ninth month of the Hijri year and the month in which the Quran was revealed. Muslims who are able and obligated fast from dawn to sunset, while devoting themselves to prayer, Quran recitation, generosity, self-discipline, and improving their character."
+  },
+  "10": {
+    "name": "Shawwal",
+    "description": "Shawwal is the tenth month of the Hijri year and begins with Eid al-Fitr, which celebrates the completion of Ramadan. It is a time for gratitude, family and community ties, generosity, and carrying the spiritual lessons of Ramadan into everyday life."
+  },
+  "11": {
+    "name": "Dhu al-Qi'dah",
+    "description": "Dhu al-Qi'dah is the eleventh month of the Hijri year and one of the four sacred months. Its name is traditionally connected with a time of truce and restraint, making it a fitting month to pursue peace, avoid harm, and prepare for the rites and responsibilities of Dhu al-Hijjah."
+  },
+  "12": {
+    "name": "Dhu al-Hijjah",
+    "description": "Dhu al-Hijjah is the twelfth and final month of the Hijri year and one of the four sacred months. Its first ten days are especially significant, including the Day of Arafah and Eid al-Adha. The month is also the season of Hajj, when pilgrims gather in Mecca to worship Allah and fulfill the pilgrimage."
+  }
 }

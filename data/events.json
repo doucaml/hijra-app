@@ -1,44 +1,243 @@
 {
   "1": {
-    "1": "Beginning of the year (Hijri New Year)",
-    "9": "Tasua",
-    "10": "Ashoura"
+    "1": {
+      "title": "Hijri New Year",
+      "description": "The beginning of a new Hijri year invites Muslims to reflect on the passage of time, renew their intentions, and remember the Hijra — the migration of the Prophet Muhammad ﷺ from Mecca to Medina. It is an opportunity to look back with gratitude and move forward with purpose.",
+      "actions": {
+        "recommended": [
+          "Reflect on the past year and renew your intentions.",
+          "Make dua for a year filled with faith, goodness, and guidance.",
+          "Learn about the Hijra and its significance in Islamic history."
+        ]
+      }
+    },
+    "9": {
+      "title": "Tasua",
+      "description": "Tasua is associated with the events surrounding Ashoura and the martyrdom of Imam Hussain, the grandson of the Prophet Muhammad ﷺ, at Karbala. Fasting alongside Ashoura is also practiced by many Muslims as a way to distinguish this observance from other traditions.",
+      "actions": {
+        "recommended": [
+          "Fast if you are able to do so.",
+          "Remember the sacrifices made for justice and truth.",
+          "Increase prayer, charity, and acts of kindness."
+        ]
+      }
+    },
+    "10": {
+      "title": "Ashoura",
+      "description": "Ashoura recalls the salvation of Musa (Moses) and the Children of Israel from Pharaoh. It is also a day of mourning for the martyrdom of Imam Hussain at Karbala, particularly in Shia traditions. The day carries themes of faith, sacrifice, courage, and standing for justice.",
+      "actions": {
+        "recommended": [
+          "Fast on this day, preferably together with the day before or after.",
+          "Study the story of Musa and the events of Karbala.",
+          "Give charity and remember those who suffer from oppression."
+        ]
+      }
+    }
   },
-
   "3": {
-    "12": "Mawlid an-Nabi (Birth of the Prophet)"
+    "12": {
+      "title": "Mawlid an-Nabi (Birth of the Prophet)",
+      "description": "Mawlid commemorates the birth of the Prophet Muhammad ﷺ and provides an opportunity to learn about his life, character, mercy, and teachings. Muslims differ on the religious status and manner of observing this occasion, but all can benefit from studying and following his example.",
+      "actions": {
+        "recommended": [
+          "Read about the life and character of the Prophet Muhammad ﷺ.",
+          "Send blessings upon the Prophet ﷺ.",
+          "Practice one of his teachings through an act of mercy or kindness."
+        ]
+      }
+    }
   },
-
   "7": {
-    "1": "Beginning of Rajab",
-    "27": "Laylat al-Mi'raj (Night of the Ascension)"
+    "1": {
+      "title": "Beginning of Rajab",
+      "description": "Rajab is one of the four sacred months in Islam. Its beginning is a reminder to honor the sanctity of these months, avoid wrongdoing, and prepare spiritually for the seasons of worship that follow.",
+      "actions": {
+        "recommended": [
+          "Increase voluntary prayer, remembrance, and supplication.",
+          "Avoid disputes and harmful behavior.",
+          "Begin preparing spiritually for Ramadan."
+        ]
+      }
+    },
+    "27": {
+      "title": "Laylat al-Mi'raj (Night of the Ascension)",
+      "description": "Laylat al-Mi'raj commemorates the miraculous Night Journey of the Prophet Muhammad ﷺ from Mecca to Jerusalem and his Ascension through the heavens. The event is a reminder of divine signs, perseverance, and the central importance of prayer in the life of a Muslim.",
+      "actions": {
+        "recommended": [
+          "Learn about the Isra and Mi'raj and the lessons they contain.",
+          "Reflect on the importance of the five daily prayers.",
+          "Make dua and offer voluntary prayer."
+        ]
+      }
+    }
   },
-
   "8": {
-    "15": "Laylat al-Bara'at (Night of Forgiveness)"
+    "15": {
+      "title": "Laylat al-Bara'at (Night of Forgiveness)",
+      "description": "Laylat al-Bara'at is traditionally regarded as a night of forgiveness and mercy. In many communities, Muslims use it for personal reflection, repentance, and supplication. The manner and religious status of observing it vary among Islamic traditions.",
+      "actions": {
+        "recommended": [
+          "Ask Allah for forgiveness and sincerely repent for mistakes.",
+          "Make dua for yourself, your family, and the wider community.",
+          "Repair relationships and seek forgiveness from those you have wronged.",
+          "Give charity and perform additional acts of worship."
+        ]
+      }
+    }
   },
-
   "9": {
-    "1": "Beginning of Ramadan",
-    "19": "Conquest of Mecca",
-    "27": "Laylat al-Qadr (Night of Destiny)"
+    "1": {
+      "title": "Beginning of Ramadan",
+      "description": "Ramadan is the month in which the Quran was revealed. It is a period of fasting, spiritual discipline, generosity, and deeper connection with Allah. Beyond abstaining from food and drink, Ramadan encourages Muslims to improve their character and compassion.",
+      "actions": {
+        "duty": [
+          "Fast from dawn until sunset when physically able and religiously obligated."
+        ],
+        "recommended": [
+          "Read and reflect on the Quran.",
+          "Perform the nightly Ramadan prayers.",
+          "Give charity and provide food for others.",
+          "Guard your speech, behavior, and intentions."
+        ]
+      }
+    },
+    "19": {
+      "title": "Conquest of Mecca",
+      "description": "The Conquest of Mecca was a turning point in the history of Islam. After years of persecution and conflict, the Prophet Muhammad ﷺ entered the city with a large Muslim community and chose mercy and reconciliation, granting safety to many of those who had opposed him.",
+      "actions": {
+        "recommended": [
+          "Study the events and leadership of the Conquest of Mecca.",
+          "Reflect on forgiveness, humility, and reconciliation.",
+          "Choose reconciliation over resentment when it is safe and appropriate."
+        ]
+      }
+    },
+    "27": {
+      "title": "Laylat al-Qadr (Night of Destiny)",
+      "description": "Laylat al-Qadr is remembered as the night on which the Quran began to be revealed to the Prophet Muhammad ﷺ. It represents immense spiritual opportunity, and worship during it is described in the Quran as better than a thousand months.",
+      "actions": {
+        "recommended": [
+          "Spend part of the night in prayer and remembrance.",
+          "Recite and reflect on the Quran.",
+          "Make sincere and abundant dua, especially for forgiveness.",
+          "Give charity discreetly."
+        ]
+      }
+    }
   },
-
   "10": {
-    "1": "Eid al-Fitr"
+    "1": {
+      "title": "Eid al-Fitr",
+      "description": "Eid al-Fitr celebrates the completion of Ramadan. It is a day of gratitude, communal worship, generosity, and joy, bringing families and communities together after a month of fasting and spiritual effort.",
+      "actions": {
+        "duty": [
+          "Pay Zakat al-Fitr before the Eid prayer if required."
+        ],
+        "recommended": [
+          "Attend the Eid prayer.",
+          "Share a festive meal and visit family and friends.",
+          "Wear clean or special clothes and express gratitude.",
+          "Include people in need in the celebrations."
+        ]
+      }
+    }
   },
-
   "11": {
-    "29": "Eid al-Mab'ath (Mission of the Prophet)"
+    "29": {
+      "title": "Eid al-Mab'ath (Mission of the Prophet)",
+      "description": "Eid al-Mab'ath commemorates the beginning of the prophetic mission of Muhammad ﷺ and the first revelation. It marks the moment when the message of Islam began to be conveyed publicly and highlights the importance of revelation, knowledge, and moral transformation.",
+      "actions": {
+        "recommended": [
+          "Read about the first revelation and the early mission of the Prophet ﷺ.",
+          "Reflect on the responsibility of sharing truth with wisdom and compassion.",
+          "Study and recite passages from the Quran."
+        ]
+      }
+    }
   },
-
   "12": {
-    "8": "Day of Tarwiyah",
-    "9": "Day of Arafah",
-    "10": "Eid al-Adha",
-    "11": "Eid al-Adha (day 2) / Days of Tashreeh",
-    "12": "Eid al-Adha (day 3) / Days of Tashreeh",
-    "13": "Eid al-Adha (day 4) / Days of Tashreeh",
-    "18": "Eid al-Ghadir"
+    "8": {
+      "title": "Day of Tarwiyah",
+      "description": "This occasion marks the beginning of the central rites of Hajj. Pilgrims prepare themselves, travel to Mina, and begin a journey focused on obedience, remembrance, equality, and devotion to Allah.",
+      "actions": {
+        "recommended": [
+          "Learn about the rites and spiritual meaning of Hajj.",
+          "Make dua for the pilgrims and those preparing for Hajj.",
+          "Recite the talbiyah and increase remembrance where appropriate."
+        ]
+      }
+    },
+    "9": {
+      "title": "Day of Arafah",
+      "description": "The Day of Arafah is the central day of the Hajj pilgrimage. Pilgrims gather in worship and supplication on the plain of Arafah, recalling the gathering of humanity before Allah and seeking forgiveness, mercy, and acceptance.",
+      "actions": {
+        "recommended": [
+          "Fast if you are not performing Hajj and are able to do so.",
+          "Make abundant dua and ask for forgiveness.",
+          "Recite the talbiyah and remember Allah.",
+          "Give charity and pray for the pilgrims."
+        ]
+      }
+    },
+    "10": {
+      "title": "Eid al-Adha",
+      "description": "Eid al-Adha commemorates the willingness of Ibrahim (Abraham) to sacrifice his son in obedience to Allah. It celebrates faith, trust, and generosity, and is closely connected to the sacrifice performed by pilgrims during Hajj.",
+      "actions": {
+        "recommended": [
+          "Attend the Eid prayer.",
+          "Offer a sacrifice if you choose and are able to do so, then share it with family, friends, and people in need.",
+          "Visit relatives and strengthen bonds within the community.",
+          "Give thanks and remember the example of Ibrahim."
+        ]
+      }
+    },
+    "11": {
+      "title": "Eid al-Adha (day 2) / Days of Tashreeh",
+      "description": "The Days of Tashreeh extend the spirit of Eid al-Adha through remembrance, gratitude, community, and generosity. During Hajj, pilgrims continue the rites of stoning the pillars in Mina as part of their devotion and rejection of evil.",
+      "actions": {
+        "recommended": [
+          "Continue enjoying Eid with family, friends, and the wider community.",
+          "Remember Allah frequently and express gratitude.",
+          "Share food and maintain charitable acts.",
+          "If performing Hajj, complete the prescribed stoning rites."
+        ]
+      }
+    },
+    "12": {
+      "title": "Eid al-Adha (day 3) / Days of Tashreeh",
+      "description": "The Days of Tashreeh extend the spirit of Eid al-Adha through remembrance, gratitude, community, and generosity. During Hajj, pilgrims continue the rites of stoning the pillars in Mina and may begin preparing to leave the area.",
+      "actions": {
+        "recommended": [
+          "Continue enjoying Eid with family, friends, and the wider community.",
+          "Remember Allah frequently and express gratitude.",
+          "Share food and maintain charitable acts.",
+          "If performing Hajj, complete the prescribed stoning rites."
+        ]
+      }
+    },
+    "13": {
+      "title": "Eid al-Adha (day 4) / Days of Tashreeh",
+      "description": "The final Day of Tashreeh brings the principal rites of Hajj to a close. It represents the completion of a demanding journey of devotion, patience, sacrifice, and remembrance of Allah.",
+      "actions": {
+        "recommended": [
+          "Complete the final stoning rites if performing Hajj.",
+          "Continue remembering Allah and expressing gratitude.",
+          "Share food and support people in need.",
+          "Reflect on how to carry the lessons of Hajj into everyday life."
+        ]
+      }
+    },
+    "18": {
+      "title": "Eid al-Ghadir",
+      "description": "Eid al-Ghadir commemorates the gathering at Ghadir Khumm, where the Prophet Muhammad ﷺ is understood in Shia tradition to have appointed Imam Ali as his successor. It is an occasion focused on loyalty, leadership, justice, and devotion to the Prophet's family.",
+      "actions": {
+        "recommended": [
+          "Study the event of Ghadir Khumm and its historical interpretations.",
+          "Reflect on justice, responsible leadership, and loyalty to truth.",
+          "Send blessings upon the Prophet ﷺ and honor his family.",
+          "Share food or give charity."
+        ]
+      }
+    }
   }
 }

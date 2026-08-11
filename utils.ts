@@ -1,10 +1,31 @@
 import { CalendarType, DateType } from "@/modules/calendar-bridge/src/CalendarBridge.types";
 import CalendarBridge from "@/modules/calendar-bridge/src/CalendarBridgeModule";
 import { useEffect, useState } from "react";
-import EventsJson from "@/data/events.json"
+import EventsJson from "@/data/events.json";
+import MonthJson from "@/data/months.json";
 
-type EventsType = Record<string, Record<string, string>>
-const Events: EventsType = EventsJson as EventsType
+interface ValueType {
+  title: string;
+  description: string;
+  actions?: {
+    duty?: string[]
+    recommended?: string[]
+  }
+}
+
+type DayType = Record<number, ValueType>
+
+type EventsType = Record<number, DayType>
+
+type MonthValue = {
+  name: string,
+  description: string
+}
+
+type MonthType = Record<number, MonthValue>
+
+export const Events: EventsType = EventsJson as EventsType
+export const Months: MonthType = MonthJson as MonthType
 
 export const daysInitials = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -111,8 +132,4 @@ export const useDate = () => {
     convertToGregorian,
     convertToHijri
   }
-}
-
-export const getEvents = (): EventsType => {
-  return Events
 }
