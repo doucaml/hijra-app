@@ -27,7 +27,7 @@ export default function AboutMonthScreen() {
             Month overview
           </Text>
 
-          <Text className="font-sans text-[17px] leading-6 text-hijra-text">
+          <Text className="font-sans text-lg leading-6 text-hijra-text">
             {month?.description}
           </Text>
         </View>

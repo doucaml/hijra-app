@@ -62,6 +62,23 @@ class Widget : GlanceAppWidget() {
 
     @Composable
     fun WidgetContent(appDate: AppDate) {
+        WidgetContent(
+            enMonth = appDate.enMonthStr,
+            arMonth = appDate.arMonthStr,
+            daysInitials = appDate.daysInitials,
+            daysList = appDate.getDaysList(),
+            currentDayNumber = appDate.dayNumber
+        )
+    }
+
+    @Composable
+    fun WidgetContent(
+        enMonth: String,
+        arMonth: String,
+        daysInitials: List<String>,
+        daysList: List<Int?>,
+        currentDayNumber: Int
+    ) {
         Column(
             modifier = GlanceModifier
                 .fillMaxSize()
@@ -71,14 +88,14 @@ class Widget : GlanceAppWidget() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CalendarHeader(appDate.enMonthStr, appDate.arMonthStr)
+            CalendarHeader(enMonth, arMonth)
 
             Spacer(modifier = GlanceModifier.height(8.dp))
 
             CalendarTable(
-                daysInitials = appDate.daysInitials,
-                daysList = appDate.getDaysList(),
-                currentDayNumber = appDate.dayNumber
+                daysInitials = daysInitials,
+                daysList = daysList,
+                currentDayNumber = currentDayNumber
             )
         }
     }
@@ -101,7 +118,7 @@ class Widget : GlanceAppWidget() {
     @Composable
     private fun CalendarTable(
         daysInitials: List<String>,
-        daysList: MutableList<Int?>,
+        daysList: List<Int?>,
         currentDayNumber: Int
     ) {
         Column(
@@ -173,23 +190,5 @@ class Widget : GlanceAppWidget() {
             ),
             modifier = modifier
         )
-    }
-
-    @OptIn(ExperimentalGlancePreviewApi::class)
-    @Composable
-    @Preview(widthDp = 240, heightDp = 240)
-    fun WidgetPreview() {
-        val appDate = AppDate()
-
-        Column(
-            modifier = GlanceModifier
-                .fillMaxSize()
-                .background(Color(0xFFE7E0D4))
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            WidgetContent(appDate)
-        }
     }
 }

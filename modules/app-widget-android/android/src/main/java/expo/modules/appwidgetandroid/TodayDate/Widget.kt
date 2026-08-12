@@ -18,6 +18,7 @@ import androidx.glance.layout.Column
 import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.preview.ExperimentalGlancePreviewApi
@@ -78,7 +79,7 @@ class Widget : GlanceAppWidget() {
             TextContent(
                 text = "${enDate.uppercase()} AH",
                 color = primaryText,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Medium,
                 textFontSize = 20.sp
             )
         }
@@ -102,23 +103,5 @@ class Widget : GlanceAppWidget() {
             ),
             modifier = modifier
         )
-    }
-
-    @OptIn(ExperimentalGlancePreviewApi::class)
-    @Composable
-    @Preview(widthDp = 300, heightDp = 160)
-    fun WidgetPreview() {
-        val appDate = AppDate()
-
-        Row(
-            modifier = GlanceModifier
-                .fillMaxSize()
-                .background(Color(0xFFE7E0D4))
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            WidgetContent(appDate.dateStr, appDate.arMonthStr)
-        }
     }
 }

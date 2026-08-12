@@ -34,7 +34,7 @@ export default function CalendarScreen() {
       end={{ x: 0, y: 1 }}
       className="flex-1"
     >
-      <View className="px-5 pt-3 pb-4 gap-y-4">
+      <View className="px-5 my-2 gap-y-2">
         <Pressable
           className="self-end"
           onPress={ onTodayDate }
@@ -129,7 +129,7 @@ export default function CalendarScreen() {
         </View>
       </View>
 
-      <View className="h-2/7 mx-4 mt-3 gap-y-4 rounded-2xl border border-hijra-border bg-hijra-surface p-5">
+      <View className="h-36 mx-4 mt-2 gap-y-4 rounded-2xl border border-hijra-border bg-hijra-surface p-5">
         <View className="gap-y-1">
           <Text className="font-sans-semibold text-[22px] leading-7 text-hijra-text">{hijrahDate.day} {hijrahDate.monthEnStr} {hijrahDate.year} AH</Text>
           <Text className="font-sans text-[15px] leading-5 text-hijra-text-secondary">{gregorianDate.day} {gregorianDate.monthEnStr} {gregorianDate.year}</Text>
