@@ -49,6 +49,7 @@ app-example
 
 # Android module build outputs
 /modules/*/android/build/
+/modules/*/android/.gradle/
 
 # Design references kept locally
 /screenshots/
