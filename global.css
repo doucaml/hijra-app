@@ -15,21 +15,4 @@
 
     /* Oldenburg font */
     --font-oldenburg: "Oldenburg-Regular";
-
-    /* Hijra design tokens */
-    --color-hijra-canvas: #FAF8F3;
-    --color-hijra-atmosphere: #F1F4F3;
-    --color-hijra-surface: #FFFFFF;
-    --color-hijra-surface-secondary: #F4F5F2;
-    --color-hijra-text: #1E2935;
-    --color-hijra-text-secondary: #66727D;
-    --color-hijra-text-disabled: #9AA4AA;
-    --color-hijra-border: #E2E6E8;
-    --color-hijra-action: #273D68;
-    --color-hijra-action-pressed: #1B2C4F;
-    --color-hijra-today: #2F7D8A;
-    --color-hijra-event: #E0EEF0;
-    --color-hijra-event-text: #1F5F6C;
-    --color-hijra-holiday: #FBE8E1;
-    --color-hijra-holiday-text: #8D3E2E;
 }

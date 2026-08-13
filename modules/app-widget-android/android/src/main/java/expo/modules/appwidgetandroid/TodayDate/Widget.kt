@@ -80,7 +80,7 @@ class Widget : GlanceAppWidget() {
                 text = "${enDate.uppercase()} AH",
                 color = primaryText,
                 fontWeight = FontWeight.Medium,
-                textFontSize = 20.sp
+                textFontSize = 18.sp
             )
         }
     }

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="SAFAR · صفر"
         android:textColor="#203A36"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold" />
 
     <GridLayout

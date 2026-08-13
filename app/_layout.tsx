@@ -8,12 +8,13 @@ export default function RootLayout() {
 
   return (
     <>
-      <Stack screenOptions={{
+      <Stack
+        screenOptions={{
           headerShown: false,
           contentStyle: {
             marginTop: insets.top,
             marginBottom: insets.bottom,
-          }
+          },
         }}
       >
         <Stack.Screen
@@ -21,9 +22,9 @@ export default function RootLayout() {
           options={{
             presentation: "formSheet",
             contentStyle: {
-              marginTop: 0
+              marginTop: 0,
             },
-            sheetAllowedDetents: [0.5, 0.8]
+            sheetAllowedDetents: [0.5, 0.8],
           }}
         />
       </Stack>

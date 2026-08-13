@@ -6,5 +6,5 @@ export default function Layout() {
     <View className="w-full h-full">
       <Slot />
     </View>
-  )
+  );
 }
