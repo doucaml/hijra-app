@@ -3,4 +3,5 @@
     android:targetCellWidth="2"
     android:targetCellHeight="2"
     android:initialLayout="@layout/glance_default_loading_layout"
+    android:previewLayout="@layout/general_calendar_preview"
 />
