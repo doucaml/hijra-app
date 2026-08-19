@@ -8,6 +8,7 @@
     "scheme": "hijra",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "platforms": ["android"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.doukouss.hijra"
