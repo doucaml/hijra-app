@@ -1,13 +1,6 @@
-import {
-  useDate,
-  todayDate,
-  daysInitials,
-  getMonthTable,
-  Events,
-} from "@/utils";
+import { useDate, todayDate, getMonthTable, daysInitials } from "@/utils";
 import { View, Text, Pressable } from "react-native";
 import { ChevronLeft, ChevronRight } from "lucide-react-native";
-import { Link } from "expo-router";
 
 export default function CalendarScreen() {
   const { hijrahDate, gregorianDate, monthProps, setDate } = useDate();
@@ -36,97 +29,66 @@ export default function CalendarScreen() {
     setDate(todayDate.day, todayDate.month, todayDate.year);
 
   return (
-    <View>
-      <View className="px-5 my-2 gap-y-2">
-        <Pressable className="self-end" onPress={onTodayDate}>
-          <Text className="rounded-full border-2 px-3 py-2 text-center font-sans-semibold text-sm">
-            {todayDate.day}
-          </Text>
+    <View className="my-2 flex-1 gap-y-6">
+      <View className="flex-row justify-between items-center mx-4">
+        <Pressable
+          onPress={onPreviousMonth}
+          className="p-2 rounded-full shadow ring ring-gray-200"
+        >
+          <ChevronLeft />
         </Pressable>
 
-        <View className="flex-row items-center justify-between gap-x-3">
-          <Pressable
-            className="h-11 w-11 items-center justify-center rounded-xl border"
-            onPress={onPreviousMonth}
-          >
-            <ChevronLeft size={32} />
-          </Pressable>
+        <Text className="font-semibold text-lg px-4 py-2">
+          {hijrahDate.monthEnStr.toUpperCase()}{" "}
+          {hijrahDate.year !== todayDate.year && hijrahDate.year}
+        </Text>
 
-          <View className="flex-1 flex-row items-center justify-center gap-x-2">
-            <View className="h-11 flex-1 justify-center rounded-xl border px-3">
-              <Text className="text-center font-sans-medium text-base">
-                {hijrahDate.monthEnStr}
-              </Text>
-            </View>
-
-            <View className="h-11 justify-center rounded-xl border px-3">
-              <Text className="text-center font-sans-medium">
-                {hijrahDate.year} AH
-              </Text>
-            </View>
-          </View>
-
-          <Pressable
-            onPress={onNextMonth}
-            className="h-11 w-11 items-center justify-center rounded-xl border"
-          >
-            <ChevronRight size={32} />
-          </Pressable>
-        </View>
-
-        <View className="items-end pb-1">
-          <Link href={"/about-month"} className="rounded-full px-4 py-2">
-            <Text className="text-end font-sans-medium text-sm">
-              About {hijrahDate.monthEnStr}
-            </Text>
-          </Link>
-        </View>
+        <Pressable
+          onPress={onNextMonth}
+          className="p-2 rounded-full shadow ring ring-gray-200"
+        >
+          <ChevronRight />
+        </Pressable>
       </View>
 
-      <View className="mx-4 mt-4 rounded-2xl border px-2 pt-4 pb-3">
-        <View className="flex-row px-1 pb-2">
-          {daysInitials.map((day, key) => (
-            <Text className="flex-1 text-center font-sans-semibold" key={key}>
-              {day}
-            </Text>
+      <View>
+        <View className="w-full flex-row justify-between">
+          {daysInitials.map((initial, key) => (
+            <View key={key} className="w-12 h-6">
+              <Text className="text-center text-gray-600">{initial}</Text>
+            </View>
           ))}
         </View>
 
-        <View className="w-full flex-col gap-y-1 px-1">
+        <View className="w-full flex-col gap-1">
           {calendarTable.map((row, key) => (
-            <View className="flex-row justify-between" key={key}>
+            <View key={key} className="flex-row justify-between">
               {row.map((col, key) => (
                 <Pressable
                   key={key}
-                  className="h-12 flex-1 items-center justify-center rounded-xl"
+                  className="size-12 justify-center items-center"
                   onPress={() =>
-                    col !== null &&
                     setDate(col, hijrahDate.month, hijrahDate.year)
                   }
                 >
-                  {hijrahDate.day !== col ? (
-                    <>
-                      {Events[hijrahDate.month]?.[col] === undefined ? (
-                        <View className="h-9 w-9 items-center justify-center rounded-full">
-                          <Text className="text-center font-sans-medium text-base">
-                            {col}
-                          </Text>
-                        </View>
-                      ) : (
-                        <View className="h-9 w-9 items-center justify-center rounded-xl">
-                          <Text className="font-sans-semibold text-base-text">
-                            {col}
-                          </Text>
-                        </View>
-                      )}
-                    </>
-                  ) : (
-                    <View className="h-9 w-9 items-center justify-center rounded-full">
-                      <Text className="font-sans-semibold text-base text-white">
-                        {col}
-                      </Text>
-                    </View>
-                  )}
+                  {col !== null &&
+                    (hijrahDate.day !== col ? (
+                      <View className="size-12 justify-center items-center">
+                        <Text className="text-center text-base">{col}</Text>
+                      </View>
+                    ) : (
+                      <View
+                        style={{ backgroundColor: "#ede0d4" }}
+                        className="size-8 justify-center items-center rounded-xl"
+                      >
+                        <Text
+                          style={{ color: "#7f5539" }}
+                          className="text-center text-base font-bold"
+                        >
+                          {col}
+                        </Text>
+                      </View>
+                    ))}
                 </Pressable>
               ))}
             </View>
@@ -134,24 +96,27 @@ export default function CalendarScreen() {
         </View>
       </View>
 
-      <View className="h-36 mx-4 mt-2 gap-y-4 rounded-2xl border p-5">
-        <View className="gap-y-1">
-          <Text className="font-sans-semibold">
-            {hijrahDate.day} {hijrahDate.monthEnStr} {hijrahDate.year} AH
+      <View className="flex-1 p-2">
+        <View>
+          <Text className="font-semibold text-xl">
+            {hijrahDate.day} {hijrahDate.monthEnStr}{" "}
+            {hijrahDate.year !== todayDate.year && hijrahDate.year}
           </Text>
+
           <Text>
             {gregorianDate.day} {gregorianDate.monthEnStr} {gregorianDate.year}
           </Text>
         </View>
 
-        <View>
-          {Events[hijrahDate.month]?.[hijrahDate.day] !== undefined && (
-            <Link href="/holiday" className="p-2 rounded-xl">
-              <Text className="font-sans-medium">
-                {Events[hijrahDate.month]?.[hijrahDate.day].title}
-              </Text>
-            </Link>
-          )}
+        <View className="mt-4 p-2">
+          <Pressable
+            style={{ backgroundColor: "#ede0d4" }}
+            className="px-2 py-4 rounded-xl"
+          >
+            <Text style={{ color: "#7f5539" }} className="text-base font-bold">
+              Date of birth of the Prophet
+            </Text>
+          </Pressable>
         </View>
       </View>
     </View>

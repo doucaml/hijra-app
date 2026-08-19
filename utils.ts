@@ -30,7 +30,7 @@ type MonthType = Record<number, MonthValue>;
 export const Events: EventsType = EventsJson as EventsType;
 export const Months: MonthType = MonthJson as MonthType;
 
-export const daysInitials = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+export const daysInitials = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
 export const CALENDAR_ROWS = 6;
 export const CALENDAR_COLS = 7;

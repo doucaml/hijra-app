@@ -12,12 +12,13 @@ export default function RootLayout() {
         screenOptions={{
           headerShown: false,
           contentStyle: {
+            backgroundColor: "white",
             marginTop: insets.top,
             marginBottom: insets.bottom,
           },
         }}
       >
-        <Stack.Screen
+        {/*<Stack.Screen
           name="(bottom-sheets)"
           options={{
             presentation: "formSheet",
@@ -26,7 +27,7 @@ export default function RootLayout() {
             },
             sheetAllowedDetents: [0.5, 0.8],
           }}
-        />
+        />*/}
       </Stack>
 
       <StatusBar style="auto" />
