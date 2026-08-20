@@ -53,3 +53,8 @@ app-example
 
 # Design references kept locally
 /screenshots/
+
+# Lockfiles from other package managers
+bun.lock
+bun.lockb
+
