@@ -15,4 +15,17 @@
 
     /* Oldenburg font */
     --font-oldenburg: "Oldenburg-Regular";
+
+
+      --color-brown-50: "#FAF1EB";
+      --color-brown-100: "#F1DCCC";
+      --color-brown-200: "#E8C6AE";
+      --color-brown-300: "#DEB190";
+      --color-brown-400: "#CB8655";
+      --color-brown-500: "#BD713B";
+      --color-brown-600: "#9E5F33";
+      --color-brown-700: "#613B20";
+      --color-brown-800: "#432917";
+      --color-brown-900: "#26170D";
+
 }

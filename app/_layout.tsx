@@ -18,16 +18,16 @@ export default function RootLayout() {
           },
         }}
       >
-        {/*<Stack.Screen
+        <Stack.Screen
           name="(bottom-sheets)"
           options={{
             presentation: "formSheet",
             contentStyle: {
               marginTop: 0,
             },
-            sheetAllowedDetents: [0.5, 0.8],
+            sheetAllowedDetents: [0.4, 0.6],
           }}
-        />*/}
+        />
       </Stack>
 
       <StatusBar style="auto" />

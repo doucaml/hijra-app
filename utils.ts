@@ -31,6 +31,20 @@ export const Events: EventsType = EventsJson as EventsType;
 export const Months: MonthType = MonthJson as MonthType;
 
 export const daysInitials = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+const monthList = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 export const CALENDAR_ROWS = 6;
 export const CALENDAR_COLS = 7;
@@ -107,7 +121,16 @@ export class DateHelper {
   }
 }
 
-export const todayDate = CalendarBridge.todayDate;
+export const todayHijraDate = CalendarBridge.todayDate;
+
+const date = new Date();
+
+export const todayGregorianDate: DateType = {
+  day: date.getDate(),
+  month: date.getMonth() + 1,
+  monthEnStr: monthList[date.getMonth()],
+  year: date.getFullYear(),
+};
 
 export const useDate = () => {
   const date = new DateHelper();
