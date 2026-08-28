@@ -8,6 +8,7 @@ export default function HolidayScreen() {
   const celebration =
     Celebrations[hijrahDate.month]?.[hijrahDate.day][Number(celebrationIndex)];
 
+  return (
     <View className="flex-1 gap-y-4">
       <View className="gap-y-2">
         <Text className="text-xl font-bold text-brown-700">
