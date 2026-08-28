@@ -4,8 +4,7 @@ import {
 } from "@/modules/calendar-bridge/src/CalendarBridge.types";
 import CalendarBridge from "@/modules/calendar-bridge/src/CalendarBridgeModule";
 import { useEffect, useState } from "react";
-import EventsJson from "@/data/events.json";
-import MonthJson from "@/data/months.json";
+import CelebrationsJson from "@/data/celebrations.json";
 
 interface ValueType {
   title: string;
@@ -16,19 +15,11 @@ interface ValueType {
   };
 }
 
-type DayType = Record<number, ValueType>;
+type DayType = Record<number, ValueType[]>;
 
-type EventsType = Record<number, DayType>;
+type CelebrationsType = Record<number, DayType>;
 
-type MonthValue = {
-  name: string;
-  description: string;
-};
-
-type MonthType = Record<number, MonthValue>;
-
-export const Events: EventsType = EventsJson as EventsType;
-export const Months: MonthType = MonthJson as MonthType;
+export const Events: CelebrationsType = CelebrationsJson as CelebrationsType;
 
 export const daysInitials = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 const monthList = [
