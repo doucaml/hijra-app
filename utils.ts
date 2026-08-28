@@ -19,7 +19,8 @@ type DayType = Record<number, ValueType[]>;
 
 type CelebrationsType = Record<number, DayType>;
 
-export const Events: CelebrationsType = CelebrationsJson as CelebrationsType;
+export const Celebrations: CelebrationsType =
+  CelebrationsJson as CelebrationsType;
 
 export const daysInitials = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 const monthList = [

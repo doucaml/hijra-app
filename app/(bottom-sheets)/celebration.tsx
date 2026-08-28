@@ -1,15 +1,17 @@
-import { Events, useDate } from "@/utils";
+import { Celebrations, useDate } from "@/utils";
+import { useLocalSearchParams } from "expo-router";
 import { View, Text } from "react-native";
 
 export default function HolidayScreen() {
   const { hijrahDate, gregorianDate } = useDate();
-  const holiday = Events[hijrahDate.month]?.[hijrahDate.day];
+  const { celebrationIndex } = useLocalSearchParams();
+  const celebration =
+    Celebrations[hijrahDate.month]?.[hijrahDate.day][Number(celebrationIndex)];
 
-  return (
     <View className="flex-1 gap-y-4">
       <View className="gap-y-2">
-        <Text className="text-2xl font-oleo-script text-brown-700">
-          {holiday.title}
+        <Text className="text-xl font-bold text-brown-700">
+          {celebration.title}
         </Text>
 
         <Text className="text-gray-700 font-light">
@@ -17,7 +19,7 @@ export default function HolidayScreen() {
           {gregorianDate.day} {gregorianDate.monthEnStr} {gregorianDate.year}
         </Text>
       </View>
-      <Text className="font-light text-[17px]">{holiday.description}</Text>
+      <Text className="font-light text-[17px]">{celebration.description}</Text>
     </View>
   );
 }

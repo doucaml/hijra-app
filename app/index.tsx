@@ -4,11 +4,12 @@ import {
   getMonthTable,
   daysInitials,
   todayGregorianDate,
-  Events,
+  Celebrations as Celebrations,
 } from "@/utils";
 import { View, Text, Pressable } from "react-native";
 import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import { Link } from "expo-router";
+import { useMemo } from "react";
 
 export default function CalendarScreen() {
   const { hijrahDate, gregorianDate, monthProps, setDate } = useDate();
@@ -17,7 +18,10 @@ export default function CalendarScreen() {
     monthProps.length,
   );
 
-  const holidays = Events;
+  const celebrationsList = useMemo(
+    () => Celebrations[hijrahDate.month]?.[hijrahDate.day],
+    [hijrahDate],
+  );
 
   const onPreviousMonth = () => {
     const hijrahMonth = hijrahDate.month === 1 ? 12 : hijrahDate.month - 1;
@@ -97,7 +101,7 @@ export default function CalendarScreen() {
                     {hijrahDate.day === col ? (
                       <Text
                         className={
-                          holidays[hijrahDate.month]?.[col] !== undefined
+                          Celebrations[hijrahDate.month]?.[col] !== undefined
                             ? "text-center align-middle size-7 rounded-xl border-[1.8px] text-brown-700 bg-brown-100 border-brown-500"
                             : "text-center align-middle size-7 rounded-xl border-[1.8px] border-brown-500"
                         }
@@ -107,7 +111,7 @@ export default function CalendarScreen() {
                     ) : (
                       <Text
                         className={
-                          holidays[hijrahDate.month]?.[col] !== undefined
+                          Celebrations[hijrahDate.month]?.[col] !== undefined
                             ? "text-center align-middle size-7 rounded-xl bg-brown-100 text-brown-700"
                             : "text-center align-middle size-7"
                         }
@@ -138,14 +142,19 @@ export default function CalendarScreen() {
           </Text>
         </View>
 
-        <View className="mt-4 p-2">
-          {holidays[hijrahDate.month]?.[hijrahDate.day] !== undefined && (
-            <Link href="/holiday" className="px-2 py-4 rounded-xl bg-brown-100">
-              <Text className="text-base font-bold text-brown-700">
-                {holidays[hijrahDate.month][hijrahDate.day].title}
-              </Text>
-            </Link>
-          )}
+        <View className="mt-4 p-2 gap-y-4">
+          {celebrationsList !== undefined &&
+            celebrationsList.map((celebration, key) => (
+              <Link
+                href={`/celebration?celebrationIndex=${key}`}
+                key={key}
+                className="px-2 py-4 rounded-xl bg-brown-100"
+              >
+                <Text className="text-base font-bold text-brown-700">
+                  {celebration.title}
+                </Text>
+              </Link>
+            ))}
         </View>
       </View>
     </View>
