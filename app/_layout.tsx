@@ -25,7 +25,7 @@ export default function RootLayout() {
             contentStyle: {
               marginTop: 0,
             },
-            sheetAllowedDetents: [0.4, 0.6],
+            sheetAllowedDetents: [0.6, 0.8],
           }}
         />
       </Stack>
