@@ -4,9 +4,9 @@ import { View, Text } from "react-native";
 
 export default function HolidayScreen() {
   const { hijrahDate, gregorianDate } = useCalendarDate();
-  const { celebrationIndex } = useLocalSearchParams();
+  const { celebrationIndex, day, month } = useLocalSearchParams();
   const celebration =
-    Celebrations[hijrahDate.month]?.[hijrahDate.day][Number(celebrationIndex)];
+    Celebrations[Number(month)]?.[Number(day)][Number(celebrationIndex)];
 
   return (
     <View className="flex-1 gap-y-4">

@@ -157,7 +157,7 @@ export default function CalendarScreen() {
           {celebrationsList !== undefined &&
             celebrationsList.map((celebration, key) => (
               <Link
-                href={`/celebration?celebrationIndex=${key}`}
+                href={`/celebration?celebrationIndex=${key}&month=${hijrahDate.month}&day=${hijrahDate.day}`}
                 key={key}
                 className="px-2 py-4 rounded-xl bg-brown-100"
               >
