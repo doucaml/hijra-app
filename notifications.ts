@@ -38,8 +38,8 @@ export const checkNotificationPermission = async () => {
 
   if (currentStatus !== "granted") {
     console.log("Permission denied.");
-    return;
-  }
+    return false;
+  } else return true;
 };
 
 export const registerNotification = async (
@@ -125,8 +125,6 @@ export const registerMonthlyNotification = async (
   );
 };
 
-const registerReccurentNotifications = () => {};
-
 export const checkReccurentNotificationsRegistering = async () => {
   const scheduledNotifications =
     await Notifications.getAllScheduledNotificationsAsync();
@@ -149,4 +147,15 @@ export const checkReccurentNotificationsRegistering = async () => {
   });
 
   return notScheduledNotifications;
+};
+
+export const registerReccurentNotifications = async () => {
+  const notScheduledNotifications =
+    await checkReccurentNotificationsRegistering();
+
+  Object.values(notScheduledNotifications).forEach(({ frequency, ...body }) => {
+    if (frequency === "weekly")
+      registerWeeklyNotification(body as WeeklyNotification);
+    else registerMonthlyNotification(body as MonthlyNotification);
+  });
 };

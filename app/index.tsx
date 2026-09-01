@@ -9,10 +9,13 @@ import {
 import { View, Text, Pressable } from "react-native";
 import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import { Link } from "expo-router";
-import { checkReccurentNotificationsRegistering } from "@/notifications";
+import {
+  checkNotificationPermission,
+  registerReccurentNotifications,
+} from "@/notifications";
 import { useEffect } from "react";
 
-let notificationsChecksDone = false;
+let notificationsRegisteringDone = false;
 
 export default function CalendarScreen() {
   const { hijrahDate, gregorianDate, monthProps, editDate } = useCalendarDate();
@@ -23,15 +26,15 @@ export default function CalendarScreen() {
 
   const celebrationsList = Celebrations[hijrahDate.month]?.[hijrahDate.day];
 
-  const setWeeklyNotifications = async () => {
-    const notScheduled = await checkReccurentNotificationsRegistering();
-  };
-
   useEffect(() => {
-    if (!notificationsChecksDone) {
-      setWeeklyNotifications();
-      notificationsChecksDone = true;
-    }
+    (async () => {
+      const granted = await checkNotificationPermission();
+
+      if (granted && !notificationsRegisteringDone) {
+        registerReccurentNotifications();
+        notificationsRegisteringDone = true;
+      }
+    })();
   }, []);
 
   const onPreviousMonth = () => {
