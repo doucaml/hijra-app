@@ -3,7 +3,7 @@ import {
   DateType,
 } from "@/modules/calendar-bridge/src/CalendarBridge.types";
 import CalendarBridge from "@/modules/calendar-bridge/src/CalendarBridgeModule";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CelebrationsJson from "@/data/celebrations.json";
 
 interface ValueType {
@@ -67,29 +67,56 @@ export const getMonthTable = (
   return calendarTable;
 };
 
-export class DateHelper {
+type DateInternalType = { day: number; month: number; year: number };
+
+export class CalendarDate {
+  date: DateInternalType;
+
+  constructor(day?: number, month?: number, year?: number) {
+    if (day && month && year)
+      this.date = {
+        day: day,
+        month: month,
+        year: year,
+      };
+    else
+      this.date = {
+        day: todayHijraDate.day,
+        month: todayHijraDate.month,
+        year: todayHijraDate.year,
+      };
+  }
+
+  editDate(day: number, month: number, year: number) {
+    this.date = {
+      day: day,
+      month: month,
+      year: year,
+    };
+  }
+
   get hijrahDate() {
-    return CalendarBridge.hijrahDate;
+    return CalendarBridge.getHijrahDate(
+      this.date.day,
+      this.date.month,
+      this.date.year,
+    );
   }
 
   get gregorianDate() {
-    return CalendarBridge.gregorianDate;
+    return CalendarBridge.convertHijriToGregorian(
+      this.date.day,
+      this.date.month,
+      this.date.year,
+    );
   }
 
-  get monthProps() {
-    return CalendarBridge.monthProps;
-  }
-
-  setPreviousMonth() {
-    CalendarBridge.setToPreviousMonth();
-  }
-
-  setNextMonth() {
-    CalendarBridge.setToNextMonth();
-  }
-
-  static setDate(day: number, month: number, year: number) {
-    CalendarBridge.setDate(day, month, year);
+  get hijrahMonthProps() {
+    return CalendarBridge.getMonthProps(
+      "hijri",
+      this.date.month,
+      this.date.year,
+    );
   }
 
   static convertToHijri(day: number, month: number, year: number): DateType {
@@ -124,40 +151,18 @@ export const todayGregorianDate: DateType = {
   year: date.getFullYear(),
 };
 
-export const useDate = () => {
-  const date = new DateHelper();
+export const useCalendarDate = () => {
+  const [date, setDate] = useState(new CalendarDate());
 
-  const [hijrahDate, setHijraDate] = useState(date.hijrahDate);
-  const [gregorianDate, setGregorianDate] = useState(date.gregorianDate);
-  const [monthProps, setMonthProps] = useState(date.monthProps);
+  const editDate = (day: number, month: number, year: number) =>
+    setDate(new CalendarDate(day, month, year));
 
-  useEffect(() => {
-    const listener = CalendarBridge.addListener("onDateChange", () => {
-      setGregorianDate(date.gregorianDate);
-      setHijraDate(date.hijrahDate);
-      setMonthProps(date.monthProps);
-    });
-
-    return () => listener.remove();
-  }, []);
-
-  const setDate = (day: number, month: number, year: number) => {
-    DateHelper.setDate(day, month, year);
-  };
-
-  const convertToHijri = (day: number, month: number, year: number) => {
-    return DateHelper.convertToHijri(day, month, year);
-  };
-
-  const convertToGregorian = (day: number, month: number, year: number) => {
-    return DateHelper.convertToGregorian(day, month, year);
-  };
   return {
-    hijrahDate,
-    gregorianDate,
-    monthProps,
-    setDate,
-    convertToGregorian,
-    convertToHijri,
+    hijrahDate: date.hijrahDate,
+    gregorianDate: date.gregorianDate,
+    monthProps: date.hijrahMonthProps,
+    editDate,
+    convertToGregorian: CalendarDate.convertToGregorian,
+    convertToHijri: CalendarDate.convertToHijri,
   };
 };

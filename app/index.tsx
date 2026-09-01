@@ -1,11 +1,11 @@
 import {
-  useDate,
+  useCalendarDate,
   todayHijraDate,
   getMonthTable,
   daysInitials,
   todayGregorianDate,
   Celebrations as Celebrations,
-} from "@/utils";
+} from "@/dates";
 import { View, Text, Pressable } from "react-native";
 import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import { Link } from "expo-router";
@@ -15,7 +15,7 @@ import { useEffect } from "react";
 let notificationsChecksDone = false;
 
 export default function CalendarScreen() {
-  const { hijrahDate, gregorianDate, monthProps, setDate } = useDate();
+  const { hijrahDate, gregorianDate, monthProps, editDate } = useCalendarDate();
   const calendarTable = getMonthTable(
     monthProps.firstDayWeekPosition,
     monthProps.length,
@@ -39,7 +39,7 @@ export default function CalendarScreen() {
     const hijrahYear =
       hijrahDate.month === 1 ? hijrahDate.year - 1 : hijrahDate.year;
 
-    setDate(1, hijrahMonth, hijrahYear);
+    editDate(1, hijrahMonth, hijrahYear);
   };
 
   const onNextMonth = () => {
@@ -47,11 +47,11 @@ export default function CalendarScreen() {
     const hijrahYear =
       hijrahDate.month === 12 ? hijrahDate.year + 1 : hijrahDate.year;
 
-    setDate(1, hijrahMonth, hijrahYear);
+    editDate(1, hijrahMonth, hijrahYear);
   };
 
   const onTodayDate = () =>
-    setDate(todayHijraDate.day, todayHijraDate.month, todayHijraDate.year);
+    editDate(todayHijraDate.day, todayHijraDate.month, todayHijraDate.year);
 
   return (
     <View className="my-2 flex-1 gap-y-3">
@@ -106,7 +106,7 @@ export default function CalendarScreen() {
                     key={key}
                     className="size-8 justify-center items-center"
                     onPress={() =>
-                      setDate(col, hijrahDate.month, hijrahDate.year)
+                      editDate(col, hijrahDate.month, hijrahDate.year)
                     }
                   >
                     {hijrahDate.day === col ? (

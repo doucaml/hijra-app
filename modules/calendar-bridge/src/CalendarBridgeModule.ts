@@ -1,20 +1,17 @@
-import { NativeModule, requireNativeModule } from "expo";
+import { requireNativeModule } from "expo";
 
-import {
-  CalendarBridgeModuleEvents,
-  CalendarType,
-  DateType,
-  MonthPropsType
-} from "./CalendarBridge.types";
+import { CalendarType, DateType, MonthPropsType } from "./CalendarBridge.types";
 
-declare class CalendarBridgeModule extends NativeModule<CalendarBridgeModuleEvents> {
+declare class CalendarBridgeModule {
   todayDate: DateType;
-  hijrahDate: DateType;
-  gregorianDate: DateType;
-  monthProps: MonthPropsType;
 
-  getMonthProps(calendar: CalendarType, month: number, year: number): MonthPropsType;
-  setDate(day: number, month: number, year: number): void;
+  getMonthProps(
+    calendar: CalendarType,
+    month: number,
+    year: number,
+  ): MonthPropsType;
+  getHijrahDate(day: number, month: number, year: number): DateType;
+  getGregorianDate(day: number, month: number, year: number): DateType;
   convertGregorianToHijri(day: number, month: number, year: number): DateType;
   convertHijriToGregorian(day: number, month: number, year: number): DateType;
 }

@@ -1,18 +1,14 @@
-export type CalendarBridgeModuleEvents = {
-  onDateChange: () => void;
-};
-
 export type MonthPropsType = {
   length: number;
-  firstDayWeekPosition: number
-}
+  firstDayWeekPosition: number;
+};
 
 export type DateType = {
   day: number;
   month: number;
   year: number;
 
-  monthEnStr: string
+  monthEnStr: string;
 };
 
-export type CalendarType = "hijri" | "gregorian"
+export type CalendarType = "hijri" | "gregorian";
