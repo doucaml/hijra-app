@@ -28,18 +28,8 @@ type NotificationConfigType = {
 };
 
 export const checkNotificationPermission = async () => {
-  let { status: currentStatus } = await Notifications.getPermissionsAsync();
-
-  if (currentStatus !== "granted") {
-    const { status: finalStatus } =
-      await Notifications.requestPermissionsAsync();
-    currentStatus = finalStatus;
-  }
-
-  if (currentStatus !== "granted") {
-    console.log("Permission denied.");
-    return false;
-  } else return true;
+  const { status } = await Notifications.getPermissionsAsync();
+  return status;
 };
 
 export const registerNotification = async (
