@@ -9,7 +9,10 @@ import {
 import { View, Text, Pressable } from "react-native";
 import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import { Link } from "expo-router";
-import { useMemo } from "react";
+import { checkNotificationsRegistering } from "@/notifications";
+import { useEffect } from "react";
+
+let notificationsChecksDone = false;
 
 export default function CalendarScreen() {
   const { hijrahDate, gregorianDate, monthProps, setDate } = useDate();
@@ -18,10 +21,18 @@ export default function CalendarScreen() {
     monthProps.length,
   );
 
-  const celebrationsList = useMemo(
-    () => Celebrations[hijrahDate.month]?.[hijrahDate.day],
-    [hijrahDate],
-  );
+  const celebrationsList = Celebrations[hijrahDate.month]?.[hijrahDate.day];
+
+  const setWeeklyNotifications = async () => {
+    const notScheduled = await checkNotificationsRegistering();
+  };
+
+  useEffect(() => {
+    if (!notificationsChecksDone) {
+      setWeeklyNotifications();
+      notificationsChecksDone = true;
+    }
+  }, []);
 
   const onPreviousMonth = () => {
     const hijrahMonth = hijrahDate.month === 1 ? 12 : hijrahDate.month - 1;
