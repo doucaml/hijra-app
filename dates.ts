@@ -70,7 +70,7 @@ export const getMonthTable = (
 type DateInternalType = { day: number; month: number; year: number };
 
 export class CalendarDate {
-  date: DateInternalType;
+  private date: DateInternalType;
 
   constructor(day?: number, month?: number, year?: number) {
     if (day && month && year)

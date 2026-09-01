@@ -1,11 +1,31 @@
 import * as Notifications from "expo-notifications";
-import NotificationsData from "@/data/casualEvents.json";
+import NotificationsData from "@/data/reccurentNotifications.json";
+import { CalendarDate } from "./dates";
 
-type WeeklyNotificationType =
-  (typeof NotificationsData.weeklyEvents)[keyof typeof NotificationsData.weeklyEvents];
+type NotificationFrequencyType = "weekly" | "monthly";
 
-type MonthlyNotificationType =
-  (typeof NotificationsData.monthlyEvents)[keyof typeof NotificationsData.monthlyEvents];
+type WeeklyNotification = {
+  identifier?: string;
+  content: Notifications.NotificationContentInput;
+  trigger: Omit<Notifications.WeeklyNotificationTrigger, "type">;
+};
+
+type MonthlyNotification = {
+  identifier?: string;
+  content: Notifications.NotificationContentInput;
+  trigger: {
+    day: number;
+    hour: number;
+    minute: number;
+  };
+};
+
+type NotificationConfigType = {
+  frequency: NotificationFrequencyType;
+  identifier?: string;
+  content: WeeklyNotification["content"] | MonthlyNotification["content"];
+  trigger: WeeklyNotification["trigger"] | MonthlyNotification["trigger"];
+};
 
 export const checkNotificationPermission = async () => {
   let { status: currentStatus } = await Notifications.getPermissionsAsync();
@@ -44,7 +64,7 @@ export const registerNotification = async (
 };
 
 export const registerWeeklyNotification = async (
-  notification: WeeklyNotificationType,
+  notification: WeeklyNotification,
 ) => {
   await registerNotification(
     notification.content,
@@ -56,7 +76,58 @@ export const registerWeeklyNotification = async (
   );
 };
 
-export const checkNotificationsRegistering = async () => {
+export const registerMonthlyNotification = async (
+  notification: MonthlyNotification,
+) => {
+  const todayDate = new CalendarDate();
+  let trigger = notification.trigger;
+  let triggerDate;
+
+  if (trigger.day > todayDate.hijrahDate.day) {
+    const date = new CalendarDate(
+      trigger.day,
+      todayDate.hijrahDate.month === 12 ? 1 : todayDate.hijrahDate.month + 1,
+      todayDate.hijrahDate.month === 12
+        ? todayDate.hijrahDate.year + 1
+        : todayDate.hijrahDate.year,
+    );
+
+    triggerDate = new Date(
+      date.gregorianDate.year,
+      date.gregorianDate.month,
+      date.gregorianDate.day,
+      trigger.hour,
+      trigger.minute,
+    );
+  } else {
+    const date = new CalendarDate(
+      trigger.day,
+      todayDate.hijrahDate.month,
+      todayDate.hijrahDate.year,
+    );
+
+    triggerDate = new Date(
+      date.gregorianDate.year,
+      date.gregorianDate.month,
+      date.gregorianDate.day,
+      trigger.hour,
+      trigger.minute,
+    );
+  }
+
+  await registerNotification(
+    notification.content,
+    {
+      date: triggerDate,
+      type: Notifications.SchedulableTriggerInputTypes.DATE,
+    },
+    notification.identifier,
+  );
+};
+
+const registerReccurentNotifications = () => {};
+
+export const checkReccurentNotificationsRegistering = async () => {
   const scheduledNotifications =
     await Notifications.getAllScheduledNotificationsAsync();
 
@@ -64,21 +135,16 @@ export const checkNotificationsRegistering = async () => {
     (value) => value.identifier,
   );
 
-  const notScheduledNotifications: (
-    WeeklyNotificationType | MonthlyNotificationType
-  )[] = [];
+  const notScheduledNotifications: NotificationConfigType[] = [];
 
-  Object.values(NotificationsData.weeklyEvents).forEach((value) => {
-    if (!notificationsIdentifiers.includes(value.identifier)) {
-      console.log("Notification with id:", value.identifier, "not scheduled.");
-      notScheduledNotifications.push(value);
-    }
-  });
-
-  Object.values(NotificationsData.monthlyEvents).forEach((value) => {
-    if (!notificationsIdentifiers.includes(value.identifier)) {
-      console.log("Notification with id:", value.identifier, "not scheduled.");
-      notScheduledNotifications.push(value);
+  Object.values(NotificationsData).forEach((notification) => {
+    if (!notificationsIdentifiers.includes(notification.identifier)) {
+      console.log(
+        "Notification with id:",
+        notification.identifier,
+        "not scheduled.",
+      );
+      notScheduledNotifications.push(notification as NotificationConfigType);
     }
   });
 

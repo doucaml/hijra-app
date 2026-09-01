@@ -9,7 +9,7 @@ import {
 import { View, Text, Pressable } from "react-native";
 import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import { Link } from "expo-router";
-import { checkNotificationsRegistering } from "@/notifications";
+import { checkReccurentNotificationsRegistering } from "@/notifications";
 import { useEffect } from "react";
 
 let notificationsChecksDone = false;
@@ -24,7 +24,7 @@ export default function CalendarScreen() {
   const celebrationsList = Celebrations[hijrahDate.month]?.[hijrahDate.day];
 
   const setWeeklyNotifications = async () => {
-    const notScheduled = await checkNotificationsRegistering();
+    const notScheduled = await checkReccurentNotificationsRegistering();
   };
 
   useEffect(() => {
