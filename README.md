@@ -8,18 +8,18 @@ The goal of the app is to help users learn more about Islamic history and celebr
 
 The features currently include:
 
-* Browsing the Hijri calendar and viewing the Gregorian/Hijri equivalent for each date
-* A widget displaying the current date or a monthly calendar view (Android only for now)
-* Notifications about recommended practices for specific days (e.g. recommended fasting on Mondays)
-* Descriptions of celebrations and historical events
+- Browsing the Hijri calendar and viewing the Gregorian/Hijri equivalent for each date
+- A widget displaying the current date or a monthly calendar view (Android only for now)
+- Notifications about recommended practices for specific days (e.g. recommended fasting on Mondays)
+- Descriptions of celebrations and historical events
 
 # Tech Stack
 
 The application is built with React Native and Expo, with a few notable libraries and technologies:
 
-* Lucide React Native for icons
-* Expo Notifications for notifications
-* Expo Modules for integrating custom libraries written in native code
+- Lucide React Native for icons
+- Expo Notifications for notifications
+- Expo Modules for integrating custom libraries written in native code
 
 Since there is currently no standard way to build widgets using React Native alone, the Android widgets are built with Kotlin and Android Jetpack Glance.
 
