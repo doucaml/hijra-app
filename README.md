@@ -1,22 +1,26 @@
 # Hijra
 
-Hijra is a mobile application for reconnecting with Hijri calendar. I had the idea of building it after having read the article of the Yaqeen Insitute about the history of the calendar and its past political importance, ([link of the article](https://yaqeeninstitute.org/read/paper/the-months-ordained-by-allah-reviving-the-islamic-calendar)). The goal throught this app is to better known islam history and celebrations but also having a way to reconnect with hijri calendar and some pratices associated to certain dates.
+Hijra is a mobile application for reconnecting with the Hijri calendar. I came up with the idea after reading an article from the Yaqeen Institute about the history of the Islamic calendar and its political significance throughout history ([link to the article](https://yaqeeninstitute.org/read/paper/the-months-ordained-by-allah-reviving-the-islamic-calendar)).
+
+The goal of the app is to help users learn more about Islamic history and celebrations, while also providing a way to reconnect with the Hijri calendar and some of the practices associated with specific dates.
 
 # Features
 
-The features for now are :
+The features currently include:
 
-- consulting hijri calendar and having the gregorian / hijri equivalent for each date
-- widget displaying the actual date or the month table (only in android for now)
-- notifications of recommended practices for some day (ie. recommended monday fasting)
-- description of a celebration / event
+* Browsing the Hijri calendar and viewing the Gregorian/Hijri equivalent for each date
+* A widget displaying the current date or a monthly calendar view (Android only for now)
+* Notifications about recommended practices for specific days (e.g. recommended fasting on Mondays)
+* Descriptions of celebrations and historical events
 
 # Tech Stack
 
-The application is built with React Native with Expo, with some notables libraries in addition :
+The application is built with React Native and Expo, with a few notable libraries and technologies:
 
-- Lucide React Native for icons
-- expo notifications for notifications
-- Expo Modules for adding custom libraries built with native code
+* Lucide React Native for icons
+* Expo Notifications for notifications
+* Expo Modules for integrating custom libraries written in native code
 
-As there is no standard way presently to add widget with only react native, android widgets are built on Kotlin with Android Jetpack Glance. The java implementation of hijri calendar is also used and exposed throught a library for hijri dates as nothing as polished exist in JavaScript ecosystem.
+Since there is currently no standard way to build widgets using React Native alone, the Android widgets are built with Kotlin and Android Jetpack Glance.
+
+The app also uses a Java implementation of the Hijri calendar, which is exposed through a custom library. I chose this approach because I couldn't find a sufficiently polished Hijri calendar implementation in the JavaScript ecosystem.
