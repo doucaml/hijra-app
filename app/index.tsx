@@ -7,7 +7,7 @@ import {
   Celebrations as Celebrations,
 } from "@/dates";
 import { View, Text, Pressable } from "react-native";
-import { ChevronLeft, ChevronRight } from "lucide-react-native";
+import { ChevronLeft, ChevronRight, SettingsIcon } from "lucide-react-native";
 import { Link } from "expo-router";
 import {
   checkNotificationPermission,
@@ -59,6 +59,9 @@ export default function CalendarScreen() {
   return (
     <View className="my-2 flex-1 gap-y-3">
       <View className="mx-5 flex-row items-center justify-between">
+        <Link href="/settings">
+          <SettingsIcon />
+        </Link>
         <Pressable
           className="ml-auto size-7 border-[1.8px] rounded-[10px] border-brown-700 justify-center items-center"
           onPress={onTodayDate}
