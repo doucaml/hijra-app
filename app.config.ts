@@ -35,7 +35,19 @@ function getIcon() {
   }
 }
 
+function getForegroundIcon() {
+  switch (process.env.APP_VARIANT) {
+    case "production":
+      return undefined;
+    case "preview":
+      return "./assets/images/foreground-icon-preview.png";
+    default:
+      return "./assets/images/foreground-icon-dev.png";
+  }
+}
+
 const icon = getIcon();
+const foregroundIcon = getForegroundIcon();
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
@@ -48,7 +60,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     icon: icon ?? config.android?.icon,
     adaptiveIcon: {
       ...config.android?.adaptiveIcon,
-      foregroundImage: icon ?? config.android?.adaptiveIcon?.foregroundImage,
+      foregroundImage:
+        foregroundIcon ?? config.android?.adaptiveIcon?.foregroundImage,
     },
   },
   plugins: [
