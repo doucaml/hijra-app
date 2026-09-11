@@ -1,6 +1,7 @@
 import * as Notifications from "expo-notifications";
 import NotificationsData from "@/data/reccurentNotifications.json";
 import { CalendarDate } from "./dates";
+import { router } from "expo-router";
 
 type NotificationFrequencyType = "weekly" | "monthly";
 
@@ -27,12 +28,26 @@ type NotificationConfigType = {
   trigger: WeeklyNotification["trigger"] | MonthlyNotification["trigger"];
 };
 
-export const checkNotificationPermission = async () => {
-  const { status } = await Notifications.getPermissionsAsync();
-  return status;
+export const isNotificationEnabled = async () => {
+  const { granted } = await Notifications.getPermissionsAsync();
+  return granted;
 };
 
-export const registerNotification = async (
+export const requestNotificationPermission = async () => {
+  const currentPermissions = await Notifications.getPermissionsAsync();
+  if (currentPermissions.granted) {
+    return true;
+  }
+
+  if (!currentPermissions.canAskAgain) {
+    router.navigate("/(bottom-sheets)/notification");
+  }
+
+  const requestedPermissions = await Notifications.requestPermissionsAsync();
+  return requestedPermissions.granted;
+};
+
+const registerNotification = async (
   content: Notifications.NotificationContentInput,
   trigger: Notifications.SchedulableNotificationTriggerInput | null = null,
   identifier?: string,
@@ -53,9 +68,7 @@ export const registerNotification = async (
   });
 };
 
-export const registerWeeklyNotification = async (
-  notification: WeeklyNotification,
-) => {
+const registerWeeklyNotification = async (notification: WeeklyNotification) => {
   await registerNotification(
     notification.content,
     {
@@ -66,7 +79,7 @@ export const registerWeeklyNotification = async (
   );
 };
 
-export const registerMonthlyNotification = async (
+const registerMonthlyNotification = async (
   notification: MonthlyNotification,
 ) => {
   const todayDate = new CalendarDate();
@@ -115,7 +128,7 @@ export const registerMonthlyNotification = async (
   );
 };
 
-export const checkReccurentNotificationsRegistering = async () => {
+const checkReccurentNotificationsRegistration = async () => {
   const scheduledNotifications =
     await Notifications.getAllScheduledNotificationsAsync();
 
@@ -136,11 +149,19 @@ export const checkReccurentNotificationsRegistering = async () => {
 
 export const registerReccurentNotifications = async () => {
   const notScheduledNotifications =
-    await checkReccurentNotificationsRegistering();
+    await checkReccurentNotificationsRegistration();
 
   Object.values(notScheduledNotifications).forEach(({ frequency, ...body }) => {
     if (frequency === "weekly")
       registerWeeklyNotification(body as WeeklyNotification);
     else registerMonthlyNotification(body as MonthlyNotification);
   });
+};
+
+export const dismissAllNotifications = async () => {
+  try {
+    await Notifications.dismissAllNotificationsAsync();
+  } catch (e) {
+    console.error(e);
+  }
 };
