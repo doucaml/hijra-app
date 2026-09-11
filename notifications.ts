@@ -127,11 +127,6 @@ export const checkReccurentNotificationsRegistering = async () => {
 
   Object.values(NotificationsData).forEach((notification) => {
     if (!notificationsIdentifiers.includes(notification.identifier)) {
-      console.log(
-        "Notification with id:",
-        notification.identifier,
-        "not scheduled.",
-      );
       notScheduledNotifications.push(notification as NotificationConfigType);
     }
   });
