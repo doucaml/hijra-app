@@ -1,35 +1,12 @@
+import {
+  dismissAllNotifications,
+  isNotificationEnabled,
+  requestNotificationPermission,
+} from "@/notifications";
+import { PreferencesContext } from "@/PreferencesContext";
 import { Href, Link } from "expo-router";
-import { View, Text, Pressable, Switch } from "react-native";
-import { createMMKV, useMMKVBoolean, useMMKVNumber } from "react-native-mmkv";
-
-const storage = createMMKV();
-storage.contains("preferences.notifications") === undefined &&
-  storage.set("preferences.notifications", false);
-storage.getNumber("preferences.days_correction") === undefined &&
-  storage.set("preferences.days_correction", 0);
-
-const usePreferences = () => {
-  const [notificationState, setNotificationState] = useMMKVBoolean(
-    "preferences.notifications",
-  );
-
-  const [daysCorrection, setDaysCorrection] = useMMKVNumber(
-    "preferences.days_correction",
-  );
-
-  const toggleNotificationState = () => setNotificationState((prev) => !prev);
-  const editDaysCorrection = () =>
-    setDaysCorrection((prev) => {
-      if (prev === 2) return -2;
-      else return prev! + 1;
-    });
-  return {
-    notificationState,
-    toggleNotificationState,
-    daysCorrection,
-    editDaysCorrection,
-  };
-};
+import { useContext } from "react";
+import { View, Text, Pressable, StyleSheet } from "react-native";
 
 function ScreenLink({ href, title }: { href: Href; title: string }) {
   return (
@@ -39,13 +16,52 @@ function ScreenLink({ href, title }: { href: Href; title: string }) {
   );
 }
 
+function SwitchBtn({
+  value,
+  onChange,
+}: {
+  value: boolean;
+  onChange: () => void;
+}) {
+  return (
+    <Pressable onPress={onChange}>
+      <View className="flex-row w-12 h-6 bg-gray-300 rounded-xl border-2 border-gray-500">
+        <View
+          style={value === false ? styles.switchBtnTrue : styles.switchBtnFalse}
+        />
+        <View
+          style={value === true ? styles.switchBtnTrue : styles.switchBtnFalse}
+        />
+      </View>
+    </Pressable>
+  );
+}
+
 export default function Screen() {
   const {
     notificationState,
-    toggleNotificationState,
+    setNotificationState,
     daysCorrection,
-    editDaysCorrection,
-  } = usePreferences();
+    setDaysCorrection,
+  } = useContext(PreferencesContext);
+
+  const toggleNotificationState = async () => {
+    if (notificationState) {
+      dismissAllNotifications();
+      setNotificationState(false);
+      return;
+    }
+
+    const isEnabled = await isNotificationEnabled();
+    if (isEnabled) return setNotificationState(true);
+
+    const isGranted = await requestNotificationPermission();
+    return setNotificationState(isGranted);
+  };
+
+  const editDaysCorrection = () => {
+    setDaysCorrection(daysCorrection === 2 ? -2 : daysCorrection + 1);
+  };
 
   return (
     <View className="flex-1 gap-y-6">
@@ -56,9 +72,9 @@ export default function Screen() {
 
         <View className="flex-row items-center justify-between p-2 my-1 h-12 rounded-lg bg-gray-200">
           <Text>Allow notifications</Text>
-          <Switch
-            value={notificationState}
-            onValueChange={toggleNotificationState}
+          <SwitchBtn
+            value={notificationState!}
+            onChange={toggleNotificationState}
           />
         </View>
 
@@ -100,3 +116,16 @@ export default function Screen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  switchBtnTrue: {
+    borderRadius: 12,
+    backgroundColor: "gray",
+    width: "50%",
+    height: "auto",
+  },
+  switchBtnFalse: {
+    width: "50%",
+    height: "auto",
+  },
+});
