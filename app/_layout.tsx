@@ -2,12 +2,13 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "@/global.css";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { PreferencesProvider } from "@/PreferencesContext";
 
 export default function RootLayout() {
   const insets = useSafeAreaInsets();
 
   return (
-    <>
+    <PreferencesProvider>
       <Stack
         screenOptions={{
           headerShown: false,
@@ -31,6 +32,6 @@ export default function RootLayout() {
       </Stack>
 
       <StatusBar style="auto" />
-    </>
+    </PreferencesProvider>
   );
 }
