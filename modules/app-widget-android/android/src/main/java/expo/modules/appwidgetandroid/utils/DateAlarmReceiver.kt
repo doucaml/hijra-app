@@ -1,4 +1,4 @@
-package expo.modules.appwidgetandroid.data
+package expo.modules.appwidgetandroid.utils
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -8,6 +8,8 @@ import expo.modules.appwidgetandroid.TodayDate.Widget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
+import expo.modules.appwidgetandroid.utils.setUpAlarm
 
 class DateAlarmReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {

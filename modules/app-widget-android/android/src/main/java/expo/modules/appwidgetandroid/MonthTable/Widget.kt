@@ -1,4 +1,4 @@
-package expo.modules.appwidgetandroid.GeneralCalendar
+package expo.modules.appwidgetandroid.MonthTable
 
 import android.content.Context
 import androidx.compose.runtime.Composable

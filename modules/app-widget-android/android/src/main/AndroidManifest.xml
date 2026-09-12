@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
     <application>
-        <receiver android:name=".data.DateAlarmReceiver" android:exported="false" />
+        <receiver android:name=".utils.DateAlarmReceiver" android:exported="false" />
         <receiver android:name=".TodayDate.Receiver"
                   android:exported="true">
             <intent-filter>
@@ -11,7 +11,7 @@
                     android:name="android.appwidget.provider"
                     android:resource="@xml/today_date_widget_info" />
         </receiver>
-        <receiver android:name=".GeneralCalendar.Receiver"
+        <receiver android:name=".MonthTable.Receiver"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

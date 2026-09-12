@@ -1,4 +1,4 @@
-package expo.modules.appwidgetandroid.TodayDate
+package expo.modules.appwidgetandroid.MonthTable
 
 import android.content.Context
 import androidx.glance.appwidget.GlanceAppWidget
