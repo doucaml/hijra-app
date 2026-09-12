@@ -1,11 +1,7 @@
-import {
-  dismissAllNotifications,
-  isNotificationEnabled,
-  requestNotificationPermission,
-} from "@/notifications";
+import { isNotificationEnabled } from "@/notifications";
 import { PreferencesContext } from "@/PreferencesContext";
 import { Href, Link } from "expo-router";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 
 function ScreenLink({ href, title }: { href: Href; title: string }) {
@@ -40,24 +36,19 @@ function SwitchBtn({
 export default function Screen() {
   const {
     notificationState,
-    setNotificationState,
+    toggleNotificationState,
     daysCorrection,
     setDaysCorrection,
   } = useContext(PreferencesContext);
 
-  const toggleNotificationState = async () => {
-    if (notificationState) {
-      dismissAllNotifications();
-      setNotificationState(false);
-      return;
-    }
+  useEffect(() => {
+    const checkNotificationValue = async () => {
+      const granted = await isNotificationEnabled();
+      if (notificationState && !granted) toggleNotificationState(false);
+    };
 
-    const isEnabled = await isNotificationEnabled();
-    if (isEnabled) return setNotificationState(true);
-
-    const isGranted = await requestNotificationPermission();
-    return setNotificationState(isGranted);
-  };
+    checkNotificationValue();
+  }, []);
 
   const editDaysCorrection = () => {
     setDaysCorrection(daysCorrection === 2 ? -2 : daysCorrection + 1);
@@ -74,7 +65,7 @@ export default function Screen() {
           <Text>Allow notifications</Text>
           <SwitchBtn
             value={notificationState!}
-            onChange={toggleNotificationState}
+            onChange={() => toggleNotificationState(true)}
           />
         </View>
 

@@ -1,6 +1,11 @@
 import { createMMKV, useMMKVBoolean, useMMKVNumber } from "react-native-mmkv";
 import { createContext, ReactNode } from "react";
-import { isNotificationEnabled } from "./notifications";
+import {
+  dismissAllNotifications,
+  isNotificationEnabled,
+  registerReccurentNotifications,
+  requestNotificationPermission,
+} from "./notifications";
 
 const storage = createMMKV();
 
@@ -27,11 +32,18 @@ const getNotificationStatus = async () => {
 
 getNotificationStatus();
 
-export const PreferencesContext = createContext({
-  notificationState: isEnabled,
-  daysCorrection: daysCorrection,
-  setNotificationState: (_: boolean) => {},
-  setDaysCorrection: (_: number) => {},
+type PreferencesContextType = {
+  notificationState: boolean;
+  daysCorrection: number;
+  toggleNotificationState: (withRequest: boolean) => void;
+  setDaysCorrection: (days: number) => void;
+};
+
+export const PreferencesContext = createContext<PreferencesContextType>({
+  notificationState: isEnabled!,
+  daysCorrection: daysCorrection!,
+  toggleNotificationState: (withRequest = false) => {},
+  setDaysCorrection: (_) => {},
 });
 
 export function PreferencesProvider({ children }: { children: ReactNode }) {
@@ -43,12 +55,37 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     "preferences.days_correction",
   );
 
+  const toggleNotificationState = async (withRequest: boolean = false) => {
+    if (notificationState) {
+      dismissAllNotifications();
+      setNotificationState(false);
+      return;
+    }
+
+    const isEnabled = await isNotificationEnabled();
+
+    if (isEnabled) {
+      registerReccurentNotifications();
+      setNotificationState(true);
+      return;
+    }
+
+    if (withRequest) {
+      const granted = await requestNotificationPermission();
+
+      if (granted) {
+        registerReccurentNotifications();
+        setNotificationState(true);
+      }
+    }
+  };
+
   return (
     <PreferencesContext
       value={{
         notificationState: notificationState!,
         daysCorrection: daysCorrection!,
-        setNotificationState: setNotificationState,
+        toggleNotificationState: toggleNotificationState,
         setDaysCorrection: setDaysCorrection,
       }}
     >

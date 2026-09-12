@@ -1,17 +1,15 @@
-import { isNotificationEnabled } from "@/notifications";
 import { PreferencesContext } from "@/PreferencesContext";
 import { router } from "expo-router";
 import { useContext, useEffect, useRef } from "react";
 import { AppState, Linking, Pressable, Text, View } from "react-native";
 
 export default function Screen() {
-  const { setNotificationState } = useContext(PreferencesContext);
+  const { toggleNotificationState } = useContext(PreferencesContext);
   const appState = useRef(AppState.currentState);
 
   useEffect(() => {
     const setFinalState = async () => {
-      const isEnabled = await isNotificationEnabled();
-      setNotificationState(isEnabled);
+      toggleNotificationState(false);
       router.back();
     };
 
@@ -23,7 +21,7 @@ export default function Screen() {
     return () => {
       subscription.remove();
     };
-  }, [setNotificationState]);
+  }, [toggleNotificationState]);
 
   const onBtnPress = async () => {
     Linking.openSettings();

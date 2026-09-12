@@ -165,3 +165,21 @@ export const dismissAllNotifications = async () => {
     console.error(e);
   }
 };
+
+export const registerTestNotification = async () => {
+  const currentDate = new Date();
+  const notificationDate = new Date();
+  notificationDate.setSeconds(currentDate.getSeconds() + 10);
+
+  await registerNotification(
+    {
+      title: "Test notification",
+      body: "Here is the test notification",
+    },
+    {
+      type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+      seconds: 5,
+    },
+    "test-notification",
+  );
+};
