@@ -7,6 +7,8 @@ import java.time.temporal.ChronoUnit
 import java.time.format.DateTimeFormatter
 import java.time.LocalDate
 
+import java.util.Locale
+
 import expo.modules.kotlin.records.Field
 import expo.modules.kotlin.records.Record
 
@@ -20,7 +22,7 @@ class Date(
     @Field val day: Int = 1,
     @Field val month: Int = 1,
     @Field val year: Int = 1,
-    @Field val monthEnStr: String = ""
+    @Field val monthEnStr: String = "",
 ): Record
 
 class CalendarDate {
@@ -48,8 +50,12 @@ class CalendarDate {
             )
         }
 
-        fun formatDate(pattern: String, date: ChronoLocalDate): String {
-            val dateFormatter = DateTimeFormatter.ofPattern(pattern)
+        fun getMonthArStr(): String {
+            return CalendarDate.formatDate("MMMM", CalendarDate.today, Locale("ar"))
+        }
+
+        fun formatDate(pattern: String, date: ChronoLocalDate, locale: Locale = Locale.UK): String {
+            val dateFormatter = DateTimeFormatter.ofPattern(pattern, locale)
             return date.format(dateFormatter)
         }
 

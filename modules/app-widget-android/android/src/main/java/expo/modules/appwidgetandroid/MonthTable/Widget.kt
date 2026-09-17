@@ -28,56 +28,55 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import expo.modules.appwidgetandroid.data.AppDate
+
+import expo.modules.appwidgetandroid.utils.WidgetDate
 
 class Widget : GlanceAppWidget() {
     private val background = ColorProvider(
         day = Color(0xFFFFF9ED),
         night = Color(0xFFF1ECE2)
     )
+
     private val accent = ColorProvider(
         day = Color(0xFFB87828),
         night = Color(0xFFA7671F)
     )
+
     private val primaryText = ColorProvider(
         day = Color(0xFF203A36),
         night = Color(0xFF203A36)
     )
+
     private val secondaryText = ColorProvider(
         day = Color(0xFF6B8179),
         night = Color(0xFF687B73)
     )
+
     private val todayText = ColorProvider(
         day = Color(0xFFFFF9ED),
         night = Color(0xFFF1ECE2)
     )
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-        val appDate = AppDate()
+        val widgetDate = WidgetDate()
 
         provideContent {
-            WidgetContent(appDate)
+            WidgetContent(widgetDate)
         }
     }
 
     @Composable
-    fun WidgetContent(appDate: AppDate) {
+    fun WidgetContent(widgetDate: WidgetDate) {
         WidgetContent(
-            enMonth = appDate.enMonthStr,
-            arMonth = appDate.arMonthStr,
-            daysInitials = appDate.daysInitials,
-            daysList = appDate.getDaysList(),
-            currentDayNumber = appDate.dayNumber
+            daysInitials = widgetDate.daysInitials,
+            widgetDate = widgetDate
         )
     }
 
     @Composable
     fun WidgetContent(
-        enMonth: String,
-        arMonth: String,
         daysInitials: List<String>,
-        daysList: List<Int?>,
-        currentDayNumber: Int
+        widgetDate: WidgetDate
     ) {
         Column(
             modifier = GlanceModifier
@@ -88,14 +87,17 @@ class Widget : GlanceAppWidget() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CalendarHeader(enMonth, arMonth)
+            CalendarHeader(
+                widgetDate.currentDate.monthEnStr,
+                widgetDate.monthArStr
+            )
 
             Spacer(modifier = GlanceModifier.height(8.dp))
 
             CalendarTable(
                 daysInitials = daysInitials,
-                daysList = daysList,
-                currentDayNumber = currentDayNumber
+                daysList = widgetDate.getDaysList(),
+                currentDayNumber = widgetDate.currentDate.day
             )
         }
     }

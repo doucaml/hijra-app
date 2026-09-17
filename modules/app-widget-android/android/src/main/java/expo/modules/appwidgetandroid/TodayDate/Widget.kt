@@ -28,7 +28,8 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import expo.modules.appwidgetandroid.data.AppDate
+
+import expo.modules.appwidgetandroid.utils.WidgetDate
 
 class Widget : GlanceAppWidget() {
     private val background = ColorProvider(
@@ -49,10 +50,11 @@ class Widget : GlanceAppWidget() {
     )
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-        val appDate = AppDate()
+        val widgetDate = WidgetDate()
+        val dateStr = "${widgetDate.currentDate.day} ${widgetDate.currentDate.monthEnStr} ${widgetDate.currentDate.year}"
 
         provideContent {
-            WidgetContent(appDate.dateStr, appDate.arMonthStr)
+            WidgetContent(dateStr, widgetDate.monthArStr)
         }
     }
 
