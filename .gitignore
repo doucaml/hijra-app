@@ -58,3 +58,6 @@ app-example
 bun.lock
 bun.lockb
 
+# Zola build output
+/docs/public/
+

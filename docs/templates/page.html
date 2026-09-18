@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+<article>
+    <h1>{{ page.title }}</h1>
+    <p id="last-update">Last updated: {{ page.extra.last_updated }}</p>
+
+    <section>
+        {{ page.content | safe }}
+    </section>
+</article>
+{% endblock %}
