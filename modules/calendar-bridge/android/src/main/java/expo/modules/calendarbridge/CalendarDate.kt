@@ -27,7 +27,10 @@ class Date(
 
 class CalendarDate {
     companion object {
-        val today = HijrahDate.now()
+        var correctionNumber: Long = 0
+
+        val today: HijrahDate
+        get() = HijrahDate.now().plus(correctionNumber, ChronoUnit.DAYS)
 
         val todayDate: Date
         get() = CalendarDate.getDateMap(today)
@@ -39,6 +42,10 @@ class CalendarDate {
                 length = date.lengthOfMonth(),
                 firstDayWeekPosition = date.get(ChronoField.DAY_OF_WEEK)
             )
+        }
+
+        fun editAdjustDay(newNumber: Long) {
+            CalendarDate.correctionNumber = newNumber
         }
 
         fun getDateMap(date: ChronoLocalDate): Date {

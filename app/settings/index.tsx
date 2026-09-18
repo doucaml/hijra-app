@@ -1,6 +1,7 @@
 import { isNotificationEnabled } from "@/notifications";
 import { PreferencesContext } from "@/PreferencesContext";
-import { Href, Link } from "expo-router";
+import { Href, Link, router } from "expo-router";
+import { ArrowLeftIcon } from "lucide-react-native";
 import { useContext, useEffect } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 
@@ -38,7 +39,7 @@ export default function Screen() {
     notificationState,
     toggleNotificationState,
     daysCorrection,
-    setDaysCorrection,
+    editDaysCorrection,
   } = useContext(PreferencesContext);
 
   useEffect(() => {
@@ -50,13 +51,15 @@ export default function Screen() {
     checkNotificationValue();
   }, []);
 
-  const editDaysCorrection = () => {
-    setDaysCorrection(daysCorrection === 2 ? -2 : daysCorrection + 1);
-  };
-
   return (
-    <View className="flex-1 gap-y-6">
-      <Text className="text-center font-bold text-xl">Settings</Text>
+    <View className="flex-1 gap-y-6 relative">
+      <View className="flex-row items-center">
+        <Pressable className="absolute z-10" onPress={() => router.back()}>
+          <ArrowLeftIcon />
+        </Pressable>
+
+        <Text className="text-center font-bold text-xl flex-1">Settings</Text>
+      </View>
 
       <View>
         <Text className="text-lg text-gray-700">Preferences</Text>

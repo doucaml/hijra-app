@@ -69,22 +69,34 @@ export const getMonthTable = (
 
 type DateInternalType = { day: number; month: number; year: number };
 
+export const getTodayHijraDate = () => CalendarBridge.todayDate;
+const date = new Date();
+
 export class CalendarDate {
   private date: DateInternalType;
 
-  constructor(day?: number, month?: number, year?: number) {
-    if (day && month && year)
+  constructor(firstArg?: number, secondArg?: number, thirdArg?: number) {
+    if (arguments.length === 3)
       this.date = {
-        day: day,
-        month: month,
-        year: year,
+        day: firstArg!,
+        month: secondArg!,
+        year: thirdArg!,
       };
-    else
+    else if (arguments.length === 2) {
       this.date = {
-        day: todayHijraDate.day,
-        month: todayHijraDate.month,
-        year: todayHijraDate.year,
+        day: firstArg!,
+        month: secondArg!,
+        year: getTodayHijraDate().year,
       };
+    } else {
+      const today = getTodayHijraDate();
+
+      this.date = {
+        day: today.day,
+        month: today.month,
+        year: today.year,
+      };
+    }
   }
 
   editDate(day: number, month: number, year: number) {
@@ -138,11 +150,11 @@ export class CalendarDate {
   ): number {
     return CalendarBridge.getMonthProps(type, month, year).length;
   }
+
+  static adjustDaysNumber(newNumber: number) {
+    CalendarBridge.adjustDay(newNumber);
+  }
 }
-
-export const todayHijraDate = CalendarBridge.todayDate;
-
-const date = new Date();
 
 export const todayGregorianDate: DateType = {
   day: date.getDate(),
@@ -152,7 +164,7 @@ export const todayGregorianDate: DateType = {
 };
 
 export const useCalendarDate = () => {
-  const [date, setDate] = useState(new CalendarDate());
+  const [date, setDate] = useState(() => new CalendarDate());
 
   const editDate = (day: number, month: number, year: number) =>
     setDate(new CalendarDate(day, month, year));

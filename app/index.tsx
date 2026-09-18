@@ -1,6 +1,6 @@
 import {
   useCalendarDate,
-  todayHijraDate,
+  getTodayHijraDate,
   getMonthTable,
   daysInitials,
   todayGregorianDate,
@@ -13,6 +13,8 @@ import {
   isNotificationEnabled,
   registerReccurentNotifications,
 } from "@/notifications";
+import { useContext, useEffect } from "react";
+import { PreferencesContext } from "@/PreferencesContext";
 
 let notificationsRegisteringDone = false;
 
@@ -28,7 +30,18 @@ const setReccurentNotification = async () => {
 setReccurentNotification();
 
 export default function CalendarScreen() {
+  const { adjustedTodayDate: todayDate } = useContext(PreferencesContext);
+
   const { hijrahDate, gregorianDate, monthProps, editDate } = useCalendarDate();
+
+  useEffect(() => {
+    editDate(
+      todayDate.hijrahDate.day,
+      todayDate.hijrahDate.month,
+      todayDate.hijrahDate.year,
+    );
+  }, [todayDate, editDate]);
+
   const calendarTable = getMonthTable(
     monthProps.firstDayWeekPosition,
     monthProps.length,
@@ -53,7 +66,11 @@ export default function CalendarScreen() {
   };
 
   const onTodayDate = () =>
-    editDate(todayHijraDate.day, todayHijraDate.month, todayHijraDate.year);
+    editDate(
+      getTodayHijraDate().day,
+      getTodayHijraDate().month,
+      getTodayHijraDate().year,
+    );
 
   return (
     <View className="my-2 flex-1 gap-y-3">
@@ -66,7 +83,7 @@ export default function CalendarScreen() {
           onPress={onTodayDate}
         >
           <Text className="text-center align-middle text-brown-600 font-bold">
-            {todayHijraDate.day}
+            {todayDate.hijrahDate.day}
           </Text>
         </Pressable>
       </View>
@@ -80,7 +97,7 @@ export default function CalendarScreen() {
 
         <Text className="font-semibold text-lg px-4 py-2">
           {hijrahDate.monthEnStr.toUpperCase()}{" "}
-          {hijrahDate.year !== todayHijraDate.year && hijrahDate.year}
+          {hijrahDate.year !== getTodayHijraDate().year && hijrahDate.year}
         </Text>
 
         <Pressable

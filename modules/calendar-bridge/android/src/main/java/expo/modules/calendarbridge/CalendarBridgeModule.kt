@@ -39,5 +39,9 @@ class CalendarBridgeModule : Module() {
                 day, month, year
             )
         }
+
+        Function("adjustDay") {
+            newNumber: Long -> CalendarDate.editAdjustDay(newNumber)
+        }
     }
 }

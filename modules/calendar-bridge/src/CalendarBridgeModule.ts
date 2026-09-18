@@ -14,6 +14,7 @@ declare class CalendarBridgeModule {
   getGregorianDate(day: number, month: number, year: number): DateType;
   convertGregorianToHijri(day: number, month: number, year: number): DateType;
   convertHijriToGregorian(day: number, month: number, year: number): DateType;
+  adjustDay(newNumber: number): void;
 }
 
 export default requireNativeModule<CalendarBridgeModule>("CalendarBridge");

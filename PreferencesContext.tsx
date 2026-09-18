@@ -1,11 +1,12 @@
 import { createMMKV, useMMKVBoolean, useMMKVNumber } from "react-native-mmkv";
-import { createContext, ReactNode } from "react";
+import { createContext, ReactNode, useState } from "react";
 import {
   dismissAllNotifications,
   isNotificationEnabled,
   registerReccurentNotifications,
   requestNotificationPermission,
 } from "./notifications";
+import { CalendarDate } from "./dates";
 
 const storage = createMMKV();
 
@@ -33,17 +34,19 @@ const getNotificationStatus = async () => {
 getNotificationStatus();
 
 type PreferencesContextType = {
+  adjustedTodayDate: CalendarDate;
   notificationState: boolean;
   daysCorrection: number;
   toggleNotificationState: (withRequest: boolean) => void;
-  setDaysCorrection: (days: number) => void;
+  editDaysCorrection: () => void;
 };
 
 export const PreferencesContext = createContext<PreferencesContextType>({
+  adjustedTodayDate: new CalendarDate(),
   notificationState: isEnabled!,
   daysCorrection: daysCorrection!,
   toggleNotificationState: (withRequest = false) => {},
-  setDaysCorrection: (_) => {},
+  editDaysCorrection: () => {},
 });
 
 export function PreferencesProvider({ children }: { children: ReactNode }) {
@@ -54,6 +57,8 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   const [daysCorrection, setDaysCorrection] = useMMKVNumber(
     "preferences.days_correction",
   );
+
+  const [todayDate, setTodayDate] = useState(new CalendarDate());
 
   const toggleNotificationState = async (withRequest: boolean = false) => {
     if (notificationState) {
@@ -80,13 +85,21 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const editDaysCorrection = () => {
+    const nextValue = daysCorrection! === 2 ? -2 : daysCorrection! + 1;
+    setDaysCorrection(nextValue);
+    CalendarDate.adjustDaysNumber(nextValue);
+    setTodayDate(new CalendarDate());
+  };
+
   return (
     <PreferencesContext
       value={{
+        adjustedTodayDate: todayDate,
         notificationState: notificationState!,
         daysCorrection: daysCorrection!,
         toggleNotificationState: toggleNotificationState,
-        setDaysCorrection: setDaysCorrection,
+        editDaysCorrection: editDaysCorrection,
       }}
     >
       {children}
