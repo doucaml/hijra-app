@@ -15,8 +15,12 @@
             </a>
 
             <nav>
-                <a href={{ get_url(path="@/privacy-policy") }}>Privacy policy</a>
-                <a href={{ get_url(path="@/terms-of-use") }}>Terms of use</a>
+                {% set privacy = get_page(path="privacy-policy.md") %}
+                <a href={{ privacy.permalink}}>Privacy policy</a>
+
+                {% set terms = get_page(path="terms-of-use.md") %}
+                <a href={{ terms.permalink }}>Terms of use</a>
+
                 <a href="https://github.com/doucaml/hijra-app">Github</a>
             </nav>
         </header>
