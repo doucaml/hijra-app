@@ -1,5 +1,5 @@
 # The URL the site will be built for
-base_url = "https://doucaml.github.io"
+base_url = "https://doucaml.github.io/hijra-app/"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = false
