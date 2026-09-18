@@ -91,13 +91,6 @@ export default function Screen() {
       </View>
 
       <View>
-        <Text className="text-lg text-gray-700">Legal</Text>
-
-        <ScreenLink href="/settings/terms-of-use" title="Terms of use" />
-        <ScreenLink href="/settings/privacy-policy" title="Privacy policy" />
-      </View>
-
-      <View>
         <Text className="text-lg text-gray-700">About</Text>
 
         <ScreenLink href="/settings/about" title="About me" />
