@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "@/global.css";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { PreferencesProvider } from "@/PreferencesContext";
+import { PreferencesProvider } from "@/utils/PreferencesContext";
 
 export default function RootLayout() {
   const insets = useSafeAreaInsets();

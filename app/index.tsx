@@ -5,16 +5,16 @@ import {
   daysInitials,
   todayGregorianDate,
   Celebrations as Celebrations,
-} from "@/dates";
+} from "@/utils/dates";
 import { View, Text, Pressable } from "react-native";
 import { ChevronLeft, ChevronRight, SettingsIcon } from "lucide-react-native";
 import { Link } from "expo-router";
 import {
   isNotificationEnabled,
   registerReccurentNotifications,
-} from "@/notifications";
+} from "@/utils/notifications";
 import { useContext, useEffect } from "react";
-import { PreferencesContext } from "@/PreferencesContext";
+import { PreferencesContext } from "@/utils/PreferencesContext";
 
 let notificationsRegisteringDone = false;
 

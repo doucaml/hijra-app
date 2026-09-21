@@ -1,4 +1,4 @@
-import { CalendarDate, Celebrations } from "@/dates";
+import { CalendarDate, Celebrations } from "@/utils/dates";
 import { useLocalSearchParams } from "expo-router";
 import { View, Text } from "react-native";
 

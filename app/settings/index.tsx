@@ -1,5 +1,5 @@
-import { isNotificationEnabled } from "@/notifications";
-import { PreferencesContext } from "@/PreferencesContext";
+import { isNotificationEnabled } from "@/utils/notifications";
+import { PreferencesContext } from "@/utils/PreferencesContext";
 import { Href, Link, router } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
 import { useContext, useEffect } from "react";

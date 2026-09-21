@@ -1,4 +1,4 @@
-import { PreferencesContext } from "@/PreferencesContext";
+import { PreferencesContext } from "@/utils/PreferencesContext";
 import { router } from "expo-router";
 import { useContext, useEffect, useRef } from "react";
 import { AppState, Linking, Pressable, Text, View } from "react-native";
