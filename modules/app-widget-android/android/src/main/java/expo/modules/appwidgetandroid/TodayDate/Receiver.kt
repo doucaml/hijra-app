@@ -7,7 +7,7 @@ import expo.modules.appwidgetandroid.utils.setUpAlarm
 
 class Receiver: GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget
-        get() = Widget()
+        get() = TodayDateWidget()
 
     override fun onEnabled(context: Context) {
         setUpAlarm(context)

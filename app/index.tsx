@@ -75,8 +75,13 @@ export default function CalendarScreen() {
   return (
     <View className="my-2 flex-1 gap-y-3">
       <View className="mx-5 flex-row items-center justify-between">
-        <Link href="/settings">
-          <SettingsIcon />
+        <Link href="/settings" asChild>
+          <Pressable
+            accessibilityLabel="settings-button"
+            testID="settings-button"
+          >
+            <SettingsIcon />
+          </Pressable>
         </Link>
         <Pressable
           className="ml-auto size-7 border-[1.8px] rounded-[10px] border-brown-700 justify-center items-center"

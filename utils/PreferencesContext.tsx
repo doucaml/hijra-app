@@ -1,5 +1,5 @@
 import { createMMKV, useMMKVBoolean, useMMKVNumber } from "react-native-mmkv";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import {
   dismissAllNotifications,
   isNotificationEnabled,
@@ -7,6 +7,7 @@ import {
   requestNotificationPermission,
 } from "./notifications";
 import { CalendarDate } from "./dates";
+import AppWidgetAndroid from "@/modules/app-widget-android/src/AppWidgetAndroidModule";
 
 const storage = createMMKV();
 
@@ -60,6 +61,12 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
 
   const [todayDate, setTodayDate] = useState(new CalendarDate());
 
+  useEffect(() => {
+    if (daysCorrection !== undefined) {
+      CalendarDate.adjustDaysNumber(daysCorrection);
+    }
+  }, [daysCorrection]);
+
   const toggleNotificationState = async (withRequest: boolean = false) => {
     if (notificationState) {
       dismissAllNotifications();
@@ -90,6 +97,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     setDaysCorrection(nextValue);
     CalendarDate.adjustDaysNumber(nextValue);
     setTodayDate(new CalendarDate());
+    AppWidgetAndroid.updateWidgets();
   };
 
   return (

@@ -1,0 +1,76 @@
+appId: com.doukouss.hijra.dev
+---
+# Prérequis :
+#  - development build com.doukouss.hijra.dev installée + serveur Expo (`npx expo start -d -a`)
+#  - widget « Today Date » (HijraWidget) déjà placé sur l'écran d'accueil de Waydroid
+#  - la correction de date peut avoir n'importe quelle valeur au départ : le test la
+#    normalise à +0 avant de prendre la référence.
+#
+# Objectif : vérifier qu'un changement du paramètre « Adjust date » met à jour la date
+# dans l'application et dans le widget. Les dates sont lues dynamiquement, aucune date
+# du calendrier n'est codée en dur.
+
+# Cold start : garantit que l'app démarre sur l'écran calendrier.
+- stopApp
+- launchApp
+
+
+# Normalise la préférence à +0. La valeur initiale peut être -2, -1, +0, +1 ou +2.
+# La boucle clique tant que +0 n'est pas visible. La limite évite une boucle infinie
+# si le contrôle ne répond pas (la préférence parcourt normalement un cycle de 5 valeurs).
+- launchApp
+- assertVisible: "MON"
+- tapOn:
+    id: "settings-button"
+- repeat:
+    times: 5
+    while:
+      notVisible: "+0"
+    commands:
+      - tapOn:
+          id: "adjust-date-button"
+- assertVisible: "+0"
+
+# À +0, capture d'abord la date de référence affichée dans l'application.
+# Cette valeur, et non celle du widget, sert à calculer expectedDay.
+- pressKey: BACK
+- copyTextFrom:
+    text: "\\d+ .* \\d{4}"
+- evalScript: ${output.appBefore = maestro.copiedText}
+- evalScript: ${output.appDayBefore = parseInt(output.appBefore)}
+- evalScript: ${output.expectedDay = output.appDayBefore + 1}
+
+# Conserve aussi la date affichée par le widget avant l'ajustement.
+- pressKey: HOME
+- copyTextFrom:
+    text: ".*AH"
+- evalScript: ${output.widgetBefore = maestro.copiedText}
+- evalScript: ${output.widgetDayBefore = parseInt(output.widgetBefore)}
+- assertTrue: ${output.appDayBefore == output.widgetDayBefore}
+
+# Passe la correction à +1. La même date corrigée doit être visible dans l'app et le widget.
+- launchApp
+- assertVisible: "MON"
+- tapOn:
+    id: "settings-button"
+- assertVisible: "+0"
+- tapOn:
+    id: "adjust-date-button"
+- assertVisible: "+1"
+
+# Capture la date après ajustement dans l'application.
+- pressKey: BACK
+- copyTextFrom:
+    text: "\\d+ .* \\d{4}"
+- evalScript: ${output.appAfter = maestro.copiedText}
+- evalScript: ${output.appDayAfter = parseInt(output.appAfter)}
+- assertVisible: "${output.expectedDay} .*"
+
+# Capture la date après ajustement dans le widget et compare les deux écrans.
+- pressKey: HOME
+- copyTextFrom:
+    text: ".*AH"
+- evalScript: ${output.widgetAfter = maestro.copiedText}
+- evalScript: ${output.widgetDayAfter = parseInt(output.widgetAfter)}
+- assertTrue: ${output.appDayAfter == output.widgetDayAfter}
+- assertVisible: "${output.appDayAfter} .*AH"

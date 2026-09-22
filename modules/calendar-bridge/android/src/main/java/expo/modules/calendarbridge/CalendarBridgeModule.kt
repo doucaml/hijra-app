@@ -41,7 +41,7 @@ class CalendarBridgeModule : Module() {
         }
 
         Function("adjustDay") {
-            newNumber: Long -> CalendarDate.editAdjustDay(newNumber)
+            newNumber: Long -> CalendarDate.editAdjustDay(newNumber, appContext.reactContext)
         }
     }
 }

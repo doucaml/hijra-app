@@ -31,7 +31,7 @@ import androidx.glance.unit.ColorProvider
 
 import expo.modules.appwidgetandroid.utils.WidgetDate
 
-class Widget : GlanceAppWidget() {
+class TodayDateWidget : GlanceAppWidget() {
     private val background = ColorProvider(
         day = Color(0xFFFFF9ED),
         night = Color(0xFFF1ECE2)
@@ -50,7 +50,7 @@ class Widget : GlanceAppWidget() {
     )
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-        val widgetDate = WidgetDate()
+        val widgetDate = WidgetDate(context)
         val dateStr = "${widgetDate.currentDate.day} ${widgetDate.currentDate.monthEnStr} ${widgetDate.currentDate.year}"
 
         provideContent {

@@ -77,6 +77,8 @@ export default function Screen() {
 
           <View className="flex-row gap-x-4 ">
             <Pressable
+              accessibilityLabel="adjust-date-button"
+              testID="adjust-date-button"
               onPress={editDaysCorrection}
               className="flex-row items-center justify-between px-2 w-17 h-8 shadow bg-gray-100 rounded-lg"
             >

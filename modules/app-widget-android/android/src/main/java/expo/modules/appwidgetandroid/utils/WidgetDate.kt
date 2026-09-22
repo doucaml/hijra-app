@@ -1,8 +1,14 @@
 package expo.modules.appwidgetandroid.utils
 
+import android.content.Context
 import expo.modules.calendarbridge.CalendarDate
 
-class WidgetDate {
+class WidgetDate(context: Context) {
+    init {
+        CalendarDate.correctionNumber = context
+            .getSharedPreferences(CalendarDate.PREFERENCES_NAME, Context.MODE_PRIVATE)
+            .getLong(CalendarDate.CORRECTION_KEY, 0)
+    }
     val daysInitials = listOf("M", "T", "W", "T", "F", "S", "S")
 
     val currentDate = CalendarDate.todayDate

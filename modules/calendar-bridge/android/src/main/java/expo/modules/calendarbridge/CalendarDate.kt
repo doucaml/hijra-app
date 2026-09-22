@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter
 import java.time.LocalDate
 
 import java.util.Locale
+import android.content.Context
 
 import expo.modules.kotlin.records.Field
 import expo.modules.kotlin.records.Record
@@ -27,6 +28,9 @@ class Date(
 
 class CalendarDate {
     companion object {
+        const val PREFERENCES_NAME = "hijra_preferences"
+        const val CORRECTION_KEY = "days_correction"
+
         var correctionNumber: Long = 0
 
         val today: HijrahDate
@@ -44,8 +48,12 @@ class CalendarDate {
             )
         }
 
-        fun editAdjustDay(newNumber: Long) {
+        fun editAdjustDay(newNumber: Long, context: Context? = null) {
             CalendarDate.correctionNumber = newNumber
+            context?.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+                ?.edit()
+                ?.putLong(CORRECTION_KEY, newNumber)
+                ?.apply()
         }
 
         fun getDateMap(date: ChronoLocalDate): Date {
