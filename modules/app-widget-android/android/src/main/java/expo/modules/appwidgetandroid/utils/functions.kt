@@ -4,22 +4,19 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import androidx.glance.appwidget.GlanceAppWidget
-import androidx.glance.appwidget.GlanceAppWidgetManager
+import android.util.Log
 import androidx.glance.appwidget.updateAll
-import expo.modules.appwidgetandroid.MonthTable.MonthTableWidget
-import expo.modules.appwidgetandroid.TodayDate.TodayDateWidget
 
 import java.time.LocalDateTime
 import java.time.ZoneId
 
+import expo.modules.appwidgetandroid.MonthTable.MonthTableWidget
+import expo.modules.appwidgetandroid.TodayDate.TodayDateWidget
+
 
 suspend fun updateWidgets(context: Context) {
-    val todayWidget = TodayDateWidget()
-    todayWidget.updateAll(context)
-
-    val monthWidget = MonthTableWidget()
-    monthWidget.updateAll(context)
+    TodayDateWidget().updateAll(context)
+    MonthTableWidget().updateAll(context)
 }
 
 fun setUpAlarm(context: Context) {

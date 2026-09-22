@@ -3,7 +3,6 @@ package expo.modules.calendarbridge
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 
-import expo.modules.calendarbridge.CalendarDate
 
 class CalendarBridgeModule : Module() {
     override fun definition() = ModuleDefinition {
@@ -38,10 +37,6 @@ class CalendarBridgeModule : Module() {
             day: Int, month: Int, year: Int -> CalendarDate.convertGregorianToHijri(
                 day, month, year
             )
-        }
-
-        Function("adjustDay") {
-            newNumber: Long -> CalendarDate.editAdjustDay(newNumber, appContext.reactContext)
         }
     }
 }

@@ -5,6 +5,7 @@ import {
   daysInitials,
   todayGregorianDate,
   Celebrations as Celebrations,
+  CalendarDate,
 } from "@/utils/dates";
 import { View, Text, Pressable } from "react-native";
 import { ChevronLeft, ChevronRight, SettingsIcon } from "lucide-react-native";
@@ -13,8 +14,7 @@ import {
   isNotificationEnabled,
   registerReccurentNotifications,
 } from "@/utils/notifications";
-import { useContext, useEffect } from "react";
-import { PreferencesContext } from "@/utils/PreferencesContext";
+import { useEffect, useMemo } from "react";
 
 let notificationsRegisteringDone = false;
 
@@ -27,10 +27,12 @@ const setReccurentNotification = async () => {
   }
 };
 
-setReccurentNotification();
-
 export default function CalendarScreen() {
-  const { adjustedTodayDate: todayDate } = useContext(PreferencesContext);
+  const todayDate = useMemo(() => new CalendarDate(), [])
+
+  useEffect(() => {
+    setReccurentNotification();
+  }, []);
 
   const { hijrahDate, gregorianDate, monthProps, editDate } = useCalendarDate();
 

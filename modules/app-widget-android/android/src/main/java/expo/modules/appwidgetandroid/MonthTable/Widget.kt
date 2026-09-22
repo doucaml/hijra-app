@@ -31,6 +31,7 @@ import androidx.glance.unit.ColorProvider
 
 import expo.modules.appwidgetandroid.utils.WidgetDate
 
+
 class MonthTableWidget : GlanceAppWidget() {
     private val background = ColorProvider(
         day = Color(0xFFFFF9ED),
@@ -58,7 +59,7 @@ class MonthTableWidget : GlanceAppWidget() {
     )
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-        val widgetDate = WidgetDate(context)
+        val widgetDate = WidgetDate()
 
         provideContent {
             WidgetContent(widgetDate)

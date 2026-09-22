@@ -1,7 +1,5 @@
 import { requireNativeModule } from "expo";
 
-declare class AppWidgetAndroidModule {
-  updateWidgets(): void;
-}
+declare class AppWidgetAndroidModule {}
 
 export default requireNativeModule<AppWidgetAndroidModule>("AppWidgetAndroid");

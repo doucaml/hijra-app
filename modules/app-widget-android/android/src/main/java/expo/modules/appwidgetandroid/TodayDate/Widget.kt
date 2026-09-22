@@ -50,7 +50,7 @@ class TodayDateWidget : GlanceAppWidget() {
     )
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-        val widgetDate = WidgetDate(context)
+        val widgetDate = WidgetDate()
         val dateStr = "${widgetDate.currentDate.day} ${widgetDate.currentDate.monthEnStr} ${widgetDate.currentDate.year}"
 
         provideContent {

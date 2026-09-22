@@ -1,15 +1,15 @@
-import { PreferencesContext } from "@/utils/PreferencesContext";
 import { router } from "expo-router";
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { AppState, Linking, Pressable, Text, View } from "react-native";
+import { useNotifications } from "../settings";
 
 export default function Screen() {
-  const { toggleNotificationState } = useContext(PreferencesContext);
+  const { toggleNotificationsActivation } = useNotifications()
   const appState = useRef(AppState.currentState);
 
   useEffect(() => {
     const setFinalState = async () => {
-      toggleNotificationState(false);
+      toggleNotificationsActivation();
       router.back();
     };
 
@@ -21,7 +21,7 @@ export default function Screen() {
     return () => {
       subscription.remove();
     };
-  }, [toggleNotificationState]);
+  }, [toggleNotificationsActivation]);
 
   const onBtnPress = async () => {
     Linking.openSettings();

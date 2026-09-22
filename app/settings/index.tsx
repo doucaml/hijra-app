@@ -1,9 +1,9 @@
-import { isNotificationEnabled } from "@/utils/notifications";
-import { PreferencesContext } from "@/utils/PreferencesContext";
+import { dismissAllNotifications, isNotificationEnabled, registerReccurentNotifications, requestNotificationPermission } from "@/utils/notifications";
 import { Href, Link, router } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
+import { useMMKVBoolean } from "react-native-mmkv"
 
 function ScreenLink({ href, title }: { href: Href; title: string }) {
   return (
@@ -34,23 +34,50 @@ function SwitchBtn({
   );
 }
 
-export default function Screen() {
-  const {
-    notificationState,
-    toggleNotificationState,
-    daysCorrection,
-    editDaysCorrection,
-  } = useContext(PreferencesContext);
+export const useNotifications = () => {
+  const [notificationsActivated, setNotificationsActivation] = useMMKVBoolean("preferences.notifications")
+
+  const auditNotificationValue = async () => {
+    const granted = await isNotificationEnabled();
+    if (notificationsActivated && !granted) setNotificationsActivation(false);
+  };
 
   useEffect(() => {
-    const checkNotificationValue = async () => {
-      const granted = await isNotificationEnabled();
-      if (notificationState && !granted) toggleNotificationState(false);
-    };
-
-    checkNotificationValue();
+    auditNotificationValue();
   }, []);
 
+  const enableNotifications = async () => {
+    const granted = await isNotificationEnabled();
+
+    if (granted)
+      setNotificationsActivation(true);
+
+    else {
+      const grantedAfterRequest = await requestNotificationPermission()
+
+      if (grantedAfterRequest) {
+        registerReccurentNotifications()
+        setNotificationsActivation(true)
+      }
+    }
+  }
+
+  const toggleNotificationsActivation = () => {
+    setNotificationsActivation(prev => {
+      if (prev) {
+        dismissAllNotifications()
+        return false
+      }
+
+      else enableNotifications()
+    })
+  }
+
+  return { notificationsEnabled: notificationsActivated, toggleNotificationsActivation }
+}
+
+export default function Screen() {
+  const { notificationsEnabled, toggleNotificationsActivation } = useNotifications()
   return (
     <View className="flex-1 gap-y-6 relative">
       <View className="flex-row items-center">
@@ -67,28 +94,9 @@ export default function Screen() {
         <View className="flex-row items-center justify-between p-2 my-1 h-12 rounded-lg bg-gray-200">
           <Text>Allow notifications</Text>
           <SwitchBtn
-            value={notificationState!}
-            onChange={() => toggleNotificationState(true)}
+            value={notificationsEnabled ?? false}
+            onChange={toggleNotificationsActivation}
           />
-        </View>
-
-        <View className="flex-row items-center justify-between p-2 my-1 h-12 rounded-lg bg-gray-200">
-          <Text>Adjust date</Text>
-
-          <View className="flex-row gap-x-4 ">
-            <Pressable
-              accessibilityLabel="adjust-date-button"
-              testID="adjust-date-button"
-              onPress={editDaysCorrection}
-              className="flex-row items-center justify-between px-2 w-17 h-8 shadow bg-gray-100 rounded-lg"
-            >
-              <Text>
-                {daysCorrection! >= 0 ? "+" : "-"}
-                {daysCorrection}
-              </Text>
-              <Text>days</Text>
-            </Pressable>
-          </View>
         </View>
       </View>
 

@@ -150,11 +150,8 @@ export class CalendarDate {
   ): number {
     return CalendarBridge.getMonthProps(type, month, year).length;
   }
-
-  static adjustDaysNumber(newNumber: number) {
-    CalendarBridge.adjustDay(newNumber);
-  }
 }
+
 
 export const todayGregorianDate: DateType = {
   day: date.getDate(),
