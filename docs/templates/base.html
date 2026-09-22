@@ -3,25 +3,25 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" type="image/png" href={{ get_url(path="favicon.png") }}>
-        <link rel="stylesheet" href={{ get_url(path="style.css") }}>
+        <link rel="icon" type="image/png" href="{{ get_url(path="favicon.png") }}">
+        <link rel="stylesheet" href="{{ get_url(path="style.css") }}">
         <title>{% block title %}{% endblock %} - Hijra</title>
     </head>
     <body>
         <header>
-            <a href={{ config.base_url }} id="logo-div">
-                <img src={{ get_url(path="favicon.png") }} alt="Logo">
+            <a href="{{ config.base_url }}" id="logo-div">
+                <img src="{{ get_url(path="favicon.png") }}" alt="Logo">
                 Hijra
             </a>
 
             <nav>
                 {% set privacy = get_page(path="privacy-policy.md") %}
-                <a href={{ privacy.permalink}}>Privacy policy</a>
+                <a href="{{ privacy.permalink }}">Privacy policy</a>
 
                 {% set terms = get_page(path="terms-of-use.md") %}
-                <a href={{ terms.permalink }}>Terms of use</a>
+                <a href="{{ terms.permalink }}">Terms of use</a>
 
-                <a href="https://github.com/doucaml/hijra-app">Github</a>
+                <a href="https://github.com/doucaml/hijra-app">GitHub</a>
             </nav>
         </header>
 

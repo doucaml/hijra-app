@@ -7,31 +7,30 @@ last_updated = "September 18, 2026"
 
 ## Introduction
 
-This Privacy Policy is designed to help you understand our practices regarding any information we might collect from you or that you provide to us, the ways in which we use this information, and how we handle it.
+This Privacy Policy explains how Hijra (the “Application”) handles information when you use it. Hijra is designed to work locally on your device and does not require an account.
 
-Given that we do not collect any personal data or non-personal data, our practices are straightforward and committed to safeguarding your privacy.
+## Information we collect
 
+We do not collect, receive, or sell personal information through the Application. We do not operate an analytics, advertising, or tracking service, and the Application does not send your personal information to us or to our servers.
 
+Some preferences, such as your notification settings, may be stored locally on your device so that the Application can remember them. The Application may also request permission from your operating system to schedule local notifications. This information remains under the control of your device and is not collected by us.
 
-## Personal data collection and use
+## How we use information
 
-Hijra is an open-source application, and we are dedicated to user privacy. In line with this, we confirm that we do not collect, store, process, or use any personal data or non-personal data from you while you use our application.
+Because we do not collect personal information, we do not use, share, or sell personal information. The Application uses locally stored preferences only to provide its features, such as remembering whether notifications are enabled.
 
-Personal data refers to any information that could potentially identify you as an individual. Non-personal data refers to any information that does not directly identify you and is aggregated or anonymized. Since we do not collect any such information, there's no possibility of us using, sharing, or selling this data.
+## Third-party services
+
+The operating system, device manufacturer, app store, or other applications on your device may collect information independently of Hijra. These third parties may also process information when you grant permissions to them. We do not control their privacy practices, so we encourage you to review the relevant privacy policies and device settings.
 
 ## Security
 
-As LocalSend does not collect any data, there are no concerns regarding the transmission or storage of data. However, we still prioritize the security of our application and the trust you place in us by using it.
-
-
-## Third-party collection
-
-While LocalSend itself does not collect any personal or non-personal data, it is important to note that users may still be subject to data collection by third parties such as operating systems (e.g. Android, iOS), device manufacturers, and other apps that have permissions to access device data. We have no control over and assume no responsibility for the data practices of these third parties. We encourage users to review the privacy policies of their operating system and device manufacturer to better understand their data practices.
+We take reasonable steps to keep the Application secure. However, no software or device can be guaranteed to be completely secure. Since Hijra does not transmit personal information to us, there is no personal information held by us to protect from unauthorized access.
 
 ## Changes to this privacy policy
 
-We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted on this page.
+We may update this Privacy Policy from time to time. We will post any changes on this page and update the “Last updated” date above. Changes take effect when they are posted.
 
 ## Contact us
 
-If you have any questions or suggestions about this privacy policy, you can contact us at [mohamedoucoure5@gmail.com](mailto:mohamedoucoure5@gmail.com).
+If you have any questions or suggestions about this Privacy Policy, contact us at [mohamedoucoure5@gmail.com](mailto:mohamedoucoure5@gmail.com).
