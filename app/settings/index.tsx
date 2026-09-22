@@ -1,38 +1,16 @@
-import { dismissAllNotifications, isNotificationEnabled, registerReccurentNotifications, requestNotificationPermission } from "@/utils/notifications";
-import { Href, Link, router } from "expo-router";
+import ScreenLink from "@/components/ScreenLink";
+import SwitchBtn from "@/components/SwitchBtn";
+import {
+  dismissAllNotifications,
+  isNotificationEnabled,
+  registerReccurentNotifications,
+  requestNotificationPermission
+} from "@/utils/notifications";
+import { router } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
 import { useEffect } from "react";
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { useMMKVBoolean } from "react-native-mmkv"
-
-function ScreenLink({ href, title }: { href: Href; title: string }) {
-  return (
-    <Link href={href} className="p-3 my-1 rounded-lg bg-gray-200">
-      <Text>{title}</Text>
-    </Link>
-  );
-}
-
-function SwitchBtn({
-  value,
-  onChange,
-}: {
-  value: boolean;
-  onChange: () => void;
-}) {
-  return (
-    <Pressable onPress={onChange}>
-      <View className="flex-row w-12 h-6 bg-gray-300 rounded-xl border-2 border-gray-500">
-        <View
-          style={value === false ? styles.switchBtnTrue : styles.switchBtnFalse}
-        />
-        <View
-          style={value === true ? styles.switchBtnTrue : styles.switchBtnFalse}
-        />
-      </View>
-    </Pressable>
-  );
-}
 
 export const useNotifications = () => {
   const [notificationsActivated, setNotificationsActivation] = useMMKVBoolean("preferences.notifications")
@@ -113,16 +91,3 @@ export default function Screen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  switchBtnTrue: {
-    borderRadius: 12,
-    backgroundColor: "gray",
-    width: "50%",
-    height: "auto",
-  },
-  switchBtnFalse: {
-    width: "50%",
-    height: "auto",
-  },
-});
