@@ -4,20 +4,26 @@ import {
   dismissAllNotifications,
   isNotificationEnabled,
   registerReccurentNotifications,
-  requestNotificationPermission
+  requestNotificationPermission,
 } from "@/utils/notifications";
-import { router } from "expo-router";
+import { ExternalPathString, router } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
 import { useEffect } from "react";
 import { View, Text, Pressable } from "react-native";
-import { useMMKVBoolean } from "react-native-mmkv"
+import { useMMKVBoolean } from "react-native-mmkv";
+
+const WEBSITE_PAGE = process.env.EXPO_PUBLIC_WEBSITE_URL;
+const PRIVACY_PAGE = `${WEBSITE_PAGE}/privacy-policy` as ExternalPathString;
+const TERMS_PAGE = `${WEBSITE_PAGE}/terms-of-use` as ExternalPathString;
 
 export const useNotifications = () => {
-  const [notificationsActivated, setNotificationsActivation] = useMMKVBoolean("preferences.notifications")
+  const [notificationsActivated, setNotificationsActivation] = useMMKVBoolean(
+    "preferences.notifications",
+  );
 
   const auditNotificationValue = async () => {
     const granted = await isNotificationEnabled();
-    if (notificationsActivated && !granted) setNotificationsActivation(false);
+    if (!granted || !notificationsActivated) setNotificationsActivation(false);
   };
 
   useEffect(() => {
@@ -27,35 +33,35 @@ export const useNotifications = () => {
   const enableNotifications = async () => {
     const granted = await isNotificationEnabled();
 
-    if (granted)
-      setNotificationsActivation(true);
-
+    if (granted) setNotificationsActivation(true);
     else {
-      const grantedAfterRequest = await requestNotificationPermission()
+      const grantedAfterRequest = await requestNotificationPermission();
 
       if (grantedAfterRequest) {
-        registerReccurentNotifications()
-        setNotificationsActivation(true)
+        registerReccurentNotifications();
+        setNotificationsActivation(true);
       }
     }
-  }
+  };
 
   const toggleNotificationsActivation = () => {
-    setNotificationsActivation(prev => {
+    setNotificationsActivation((prev) => {
       if (prev) {
-        dismissAllNotifications()
-        return false
-      }
+        dismissAllNotifications();
+        return false;
+      } else enableNotifications();
+    });
+  };
 
-      else enableNotifications()
-    })
-  }
-
-  return { notificationsEnabled: notificationsActivated, toggleNotificationsActivation }
-}
+  return {
+    notificationsEnabled: notificationsActivated,
+    toggleNotificationsActivation,
+  };
+};
 
 export default function Screen() {
-  const { notificationsEnabled, toggleNotificationsActivation } = useNotifications()
+  const { notificationsEnabled, toggleNotificationsActivation } =
+    useNotifications();
   return (
     <View className="flex-1 gap-y-6 relative">
       <View className="flex-row items-center">
@@ -76,6 +82,13 @@ export default function Screen() {
             onChange={toggleNotificationsActivation}
           />
         </View>
+      </View>
+
+      <View>
+        <Text className="text-lg text-gray-700">Legal</Text>
+
+        <ScreenLink href={PRIVACY_PAGE} title="Privacy policy" />
+        <ScreenLink href={TERMS_PAGE} title="Terms of use" />
       </View>
 
       <View>
