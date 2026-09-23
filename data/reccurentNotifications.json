@@ -1,26 +1,42 @@
 {
   "monday": {
     "frequency": "weekly",
-    "identifier": "monday",
-    "trigger": { "weekday": 1, "hour": 20, "minute": 0 },
-    "content": { "title": "First day of week" }
+    "identifier": "monday-fasting",
+    "trigger": { "weekday": 1, "hour": 19, "minute": 0 },
+    "content": {
+      "title": "Tomorrow is monday, an occasion to fast",
+      "description": "Learn more about this sunnah",
+      "data": { "uri": "monday-and-thursday-fasting" }
+    }
   },
   "thursday": {
     "frequency": "weekly",
-    "identifier": "thursday",
-    "trigger": { "weekday": 5, "hour": 20, "minute": 0 },
-    "content": { "title": "Fourth day of week" }
+    "identifier": "thursday-fasting",
+    "trigger": { "weekday": 3, "hour": 19, "minute": 0 },
+    "content": {
+      "title": "Tomorrow is thursday, an occasion to fast",
+      "description": "Learn more about this sunnah",
+      "data": { "uri": "monday-and-thursday-fasting" }
+    }
   },
-  "jummuah": {
+  "jumuah": {
     "frequency": "weekly",
-    "identifier": "jummuah",
-    "trigger": { "weekday": 6, "hour": 9, "minute": 0 },
-    "content": { "title": "Jummuah prayer" }
+    "identifier": "jumuah-prayer",
+    "trigger": { "weekday": 4, "hour": 8, "minute": 0 },
+    "content": {
+      "title": "It's friday, the day of jumu'ah prayer",
+      "description": "Learn more about this sunnah",
+      "data": { "uri": "jumuah-prayer" }
+    }
   },
   "whiteDays": {
     "frequency": "monthly",
-    "trigger": { "day": 12, "hour": 20, "minute": 0 },
+    "trigger": { "day": 12, "hour": 18, "minute": 0 },
     "identifier": "white-days-start",
-    "content": { "title": "Start of the white days" }
+    "content": {
+      "title": "White days of this month start tomorrow",
+      "description": "Learn more about this sunnah",
+      "data": { "uri": "white-days-fasting" }
+    }
   }
 }

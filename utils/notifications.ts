@@ -1,7 +1,8 @@
 import * as Notifications from "expo-notifications";
 import NotificationsData from "@/data/reccurentNotifications.json";
 import { CalendarDate } from "./dates";
-import { router } from "expo-router";
+import { Href, router } from "expo-router";
+import { useEffect } from "react";
 
 type NotificationFrequencyType = "weekly" | "monthly";
 
@@ -40,7 +41,7 @@ export const requestNotificationPermission = async () => {
   }
 
   if (!currentPermissions.canAskAgain) {
-    router.navigate("/(bottom-sheets)/notification");
+    router.navigate("/(bottom-sheets)/notifications-permission");
   }
 
   const requestedPermissions = await Notifications.requestPermissionsAsync();
@@ -166,6 +167,20 @@ export const dismissAllNotifications = async () => {
   }
 };
 
+export const useNotificationResponse = () => {
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
+
+  useEffect(() => {
+    if (lastNotificationResponse) {
+      router.push(
+        ("good-practices/" +
+          lastNotificationResponse.notification.request.content.data
+            .uri) as Href,
+      );
+    }
+  }, [lastNotificationResponse]);
+};
+
 export const registerTestNotification = async () => {
   const currentDate = new Date();
   const notificationDate = new Date();
@@ -175,6 +190,7 @@ export const registerTestNotification = async () => {
     {
       title: "Test notification",
       body: "Here is the test notification",
+      data: { uri: "jumuah-prayer" },
     },
     {
       type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,

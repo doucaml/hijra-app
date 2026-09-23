@@ -13,6 +13,7 @@ import { Link } from "expo-router";
 import {
   isNotificationEnabled,
   registerReccurentNotifications,
+  useNotificationResponse,
 } from "@/utils/notifications";
 import { useEffect, useMemo } from "react";
 
@@ -28,11 +29,13 @@ const setReccurentNotification = async () => {
 };
 
 export default function CalendarScreen() {
-  const todayDate = useMemo(() => new CalendarDate(), [])
+  const todayDate = useMemo(() => new CalendarDate(), []);
 
   useEffect(() => {
     setReccurentNotification();
   }, []);
+
+  useNotificationResponse();
 
   const { hijrahDate, gregorianDate, monthProps, editDate } = useCalendarDate();
 
