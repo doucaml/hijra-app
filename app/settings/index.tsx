@@ -3,12 +3,12 @@ import SwitchBtn from "@/components/SwitchBtn";
 import {
   dismissAllNotifications,
   isNotificationEnabled,
-  registerReccurentNotifications,
+  registerNotifications,
   requestNotificationPermission,
 } from "@/utils/notifications";
 import { ExternalPathString, router } from "expo-router";
 import { ArrowLeftIcon } from "lucide-react-native";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { View, Text, Pressable } from "react-native";
 import { useMMKVBoolean } from "react-native-mmkv";
 
@@ -21,24 +21,26 @@ export const useNotifications = () => {
     "preferences.notifications",
   );
 
-  const auditNotificationValue = async () => {
+  const auditNotificationValue = useCallback(async () => {
     const granted = await isNotificationEnabled();
     if (!granted || !notificationsActivated) setNotificationsActivation(false);
-  };
+  }, [notificationsActivated, setNotificationsActivation]);
 
   useEffect(() => {
     auditNotificationValue();
-  }, []);
+  }, [auditNotificationValue]);
 
   const enableNotifications = async () => {
     const granted = await isNotificationEnabled();
 
-    if (granted) setNotificationsActivation(true);
-    else {
+    if (granted) {
+      await registerNotifications();
+      setNotificationsActivation(true);
+    } else {
       const grantedAfterRequest = await requestNotificationPermission();
 
       if (grantedAfterRequest) {
-        registerReccurentNotifications();
+        await registerNotifications();
         setNotificationsActivation(true);
       }
     }

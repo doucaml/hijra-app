@@ -4,7 +4,7 @@ import { EnrichedMarkdownText } from "react-native-enriched-markdown";
 import {
   goodPracticesContent,
   PracticesKeyType,
-} from "@/utils/goodPracticesContent";
+} from "@/utils/reccurentEventsContent";
 
 export default function Screen() {
   const { uri } = useLocalSearchParams();

@@ -16,9 +16,9 @@ export default function HolidayScreen() {
   const celebration = Celebrations[intMonth]?.[intDay][intCelebrationIndex];
 
   return (
-    <View className="flex-1 gap-y-4">
+    <View className="flex-1 gap-y-4 p-4">
       <View className="gap-y-2">
-        <Text className="text-xl font-bold text-brown-700">
+        <Text className="text-xl text-center font-bold text-brown-700">
           {celebration.title}
         </Text>
 

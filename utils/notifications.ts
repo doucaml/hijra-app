@@ -1,8 +1,22 @@
 import * as Notifications from "expo-notifications";
 import NotificationsData from "@/data/reccurentNotifications.json";
-import { CalendarDate } from "./dates";
+import HistoricDatesJson from "@/data/historicDates.json";
+import { CalendarDate, Celebrations } from "./dates";
 import { Href, router } from "expo-router";
 import { useEffect } from "react";
+
+export type NotificationEventType =
+  | "recurrent"
+  | "celebration"
+  | "historical";
+
+type NotificationData = {
+  type?: NotificationEventType;
+  uri?: string;
+  month?: number;
+  day?: number;
+  index?: number;
+};
 
 type NotificationFrequencyType = "weekly" | "monthly";
 
@@ -22,12 +36,29 @@ type MonthlyNotification = {
   };
 };
 
-type NotificationConfigType = {
-  frequency: NotificationFrequencyType;
-  identifier?: string;
-  content: WeeklyNotification["content"] | MonthlyNotification["content"];
-  trigger: WeeklyNotification["trigger"] | MonthlyNotification["trigger"];
+type NotificationConfig = {
+  identifier: string;
+  content: Notifications.NotificationContentInput;
+  trigger: Notifications.SchedulableNotificationTriggerInput;
+  frequency?: NotificationFrequencyType;
 };
+
+type RecurringNotification =
+  | {
+      frequency: "weekly";
+      identifier: string;
+      content: Notifications.NotificationContentInput;
+      trigger: { weekday: number; hour: number; minute: number };
+    }
+  | {
+      frequency: "monthly";
+      identifier: string;
+      content: Notifications.NotificationContentInput;
+      trigger: { day: number; hour: number; minute: number };
+    };
+
+const ANNUAL_NOTIFICATION_HOUR = 8;
+const ANNUAL_NOTIFICATION_MINUTE = 0;
 
 export const isNotificationEnabled = async () => {
   const { granted } = await Notifications.getPermissionsAsync();
@@ -42,125 +73,252 @@ export const requestNotificationPermission = async () => {
 
   if (!currentPermissions.canAskAgain) {
     router.navigate("/(bottom-sheets)/notifications-permission");
+    return false;
   }
 
   const requestedPermissions = await Notifications.requestPermissionsAsync();
   return requestedPermissions.granted;
 };
 
+let notificationHandlerConfigured = false;
+
 const registerNotification = async (
   content: Notifications.NotificationContentInput,
   trigger: Notifications.SchedulableNotificationTriggerInput | null = null,
   identifier?: string,
 ) => {
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldPlaySound: false,
-      shouldSetBadge: false,
-      shouldShowBanner: true,
-      shouldShowList: true,
-    }),
-  });
+  if (!notificationHandlerConfigured) {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+        shouldShowBanner: true,
+        shouldShowList: true,
+      }),
+    });
+    notificationHandlerConfigured = true;
+  }
 
-  Notifications.scheduleNotificationAsync({
-    identifier: identifier,
-    content: content,
-    trigger: trigger,
+  await Notifications.scheduleNotificationAsync({
+    identifier,
+    content,
+    trigger,
   });
 };
 
-const registerWeeklyNotification = async (notification: WeeklyNotification) => {
-  await registerNotification(
-    notification.content,
-    {
-      ...notification.trigger,
-      type: Notifications.SchedulableTriggerInputTypes.WEEKLY,
-    },
-    notification.identifier,
-  );
-};
-
-const registerMonthlyNotification = async (
-  notification: MonthlyNotification,
+const getNextHijriOccurrence = (
+  day: number,
+  month: number,
+  hour: number,
+  minute: number,
 ) => {
-  const todayDate = new CalendarDate();
-  let trigger = notification.trigger;
-  let triggerDate;
+  const today = new CalendarDate();
+  let year = today.hijrahDate.year;
+  let gregorianDate = CalendarDate.convertToGregorian(day, month, year);
+  let notificationDate = new Date(
+    gregorianDate.year,
+    gregorianDate.month - 1,
+    gregorianDate.day,
+    hour,
+    minute,
+    0,
+    0,
+  );
 
-  if (trigger.day > todayDate.hijrahDate.day) {
-    const date = new CalendarDate(
-      trigger.day,
-      todayDate.hijrahDate.month === 12 ? 1 : todayDate.hijrahDate.month + 1,
-      todayDate.hijrahDate.month === 12
-        ? todayDate.hijrahDate.year + 1
-        : todayDate.hijrahDate.year,
-    );
-
-    triggerDate = new Date(
-      date.gregorianDate.year,
-      date.gregorianDate.month,
-      date.gregorianDate.day,
-      trigger.hour,
-      trigger.minute,
-    );
-  } else {
-    const date = new CalendarDate(
-      trigger.day,
-      todayDate.hijrahDate.month,
-      todayDate.hijrahDate.year,
-    );
-
-    triggerDate = new Date(
-      date.gregorianDate.year,
-      date.gregorianDate.month,
-      date.gregorianDate.day,
-      trigger.hour,
-      trigger.minute,
+  if (notificationDate <= new Date()) {
+    year += 1;
+    gregorianDate = CalendarDate.convertToGregorian(day, month, year);
+    notificationDate = new Date(
+      gregorianDate.year,
+      gregorianDate.month - 1,
+      gregorianDate.day,
+      hour,
+      minute,
+      0,
+      0,
     );
   }
 
-  await registerNotification(
-    notification.content,
-    {
-      date: triggerDate,
-      type: Notifications.SchedulableTriggerInputTypes.DATE,
-    },
-    notification.identifier,
+  return notificationDate;
+};
+
+const getNextMonthlyOccurrence = (
+  day: number,
+  hour: number,
+  minute: number,
+) => {
+  const today = new CalendarDate();
+  const current = today.hijrahDate;
+  const now = new Date();
+  const isBeforeNotificationTime =
+    current.day < day ||
+    (current.day === day &&
+      (now.getHours() < hour ||
+        (now.getHours() === hour && now.getMinutes() < minute)));
+  const candidateMonth = isBeforeNotificationTime
+    ? current.month
+    : current.month === 12
+      ? 1
+      : current.month + 1;
+  const candidateYear = isBeforeNotificationTime
+    ? current.year
+    : current.month === 12
+      ? current.year + 1
+      : current.year;
+  const candidate = new CalendarDate(day, candidateMonth, candidateYear)
+    .gregorianDate;
+
+  return new Date(
+    candidate.year,
+    candidate.month - 1,
+    candidate.day,
+    hour,
+    minute,
   );
 };
 
-const checkReccurentNotificationsRegistration = async () => {
+const getRecurringNotificationConfigs = (): NotificationConfig[] =>
+  (Object.values(NotificationsData) as RecurringNotification[]).map(
+    (notification): NotificationConfig => {
+      const { frequency, identifier, content, trigger } = notification;
+
+    if (frequency === "weekly") {
+      return {
+        identifier,
+        content: {
+          ...content,
+          data: {
+            type: "recurrent" as const,
+            ...(content.data as Record<string, unknown>),
+          },
+        },
+        trigger: {
+          ...trigger,
+          type: Notifications.SchedulableTriggerInputTypes.WEEKLY,
+        },
+        frequency,
+      };
+    }
+
+    return {
+      identifier,
+      content: {
+        ...content,
+        data: {
+          type: "recurrent" as const,
+          ...(content.data as Record<string, unknown>),
+        },
+      },
+      trigger: {
+        date: getNextMonthlyOccurrence(
+          trigger.day,
+          trigger.hour,
+          trigger.minute,
+        ),
+        type: Notifications.SchedulableTriggerInputTypes.DATE,
+      },
+      frequency,
+    };
+    },
+  );
+
+const getAnnualNotificationConfigs = (): NotificationConfig[] => {
+  const configurations: NotificationConfig[] = [];
+
+  Object.entries(Celebrations).forEach(([month, days]) => {
+    Object.entries(days).forEach(([day, celebrations]) => {
+      celebrations.forEach((celebration, index) => {
+        const monthNumber = Number(month);
+        const dayNumber = Number(day);
+        configurations.push({
+          identifier: `celebration-${monthNumber}-${dayNumber}-${index}`,
+          content: {
+            title: celebration.title,
+            body: "Discover more about this celebration",
+            data: {
+              type: "celebration",
+              month: monthNumber,
+              day: dayNumber,
+              index,
+            },
+          },
+          trigger: {
+            date: getNextHijriOccurrence(
+              dayNumber,
+              monthNumber,
+              ANNUAL_NOTIFICATION_HOUR,
+              ANNUAL_NOTIFICATION_MINUTE,
+            ),
+            type: Notifications.SchedulableTriggerInputTypes.DATE,
+          },
+        });
+      });
+    });
+  });
+
+  Object.entries(HistoricDatesJson).forEach(([month, days]) => {
+    Object.entries(days).forEach(([day, historicalEvents]) => {
+      historicalEvents.forEach((event, index) => {
+        const monthNumber = Number(month);
+        const dayNumber = Number(day);
+        configurations.push({
+          identifier: `historical-${monthNumber}-${dayNumber}-${index}`,
+          content: {
+            title: event.title,
+            body: "Discover more about this historical event",
+            data: {
+              type: "historical",
+              month: monthNumber,
+              day: dayNumber,
+              index,
+            },
+          },
+          trigger: {
+            date: getNextHijriOccurrence(
+              dayNumber,
+              monthNumber,
+              ANNUAL_NOTIFICATION_HOUR,
+              ANNUAL_NOTIFICATION_MINUTE,
+            ),
+            type: Notifications.SchedulableTriggerInputTypes.DATE,
+          },
+        });
+      });
+    });
+  });
+
+  return configurations;
+};
+
+const getNotificationConfigs = () => [
+  ...getRecurringNotificationConfigs(),
+  ...getAnnualNotificationConfigs(),
+];
+
+const registerNotificationConfig = async (config: NotificationConfig) => {
+  await registerNotification(config.content, config.trigger, config.identifier);
+};
+
+export const registerNotifications = async () => {
   const scheduledNotifications =
     await Notifications.getAllScheduledNotificationsAsync();
-
-  const notificationsIdentifiers = scheduledNotifications.map(
-    (value) => value.identifier,
+  const scheduledIdentifiers = new Set(
+    scheduledNotifications.map(({ identifier }) => identifier),
   );
 
-  const notScheduledNotifications: NotificationConfigType[] = [];
-
-  Object.values(NotificationsData).forEach((notification) => {
-    if (!notificationsIdentifiers.includes(notification.identifier)) {
-      notScheduledNotifications.push(notification as NotificationConfigType);
+  for (const config of getNotificationConfigs()) {
+    if (!scheduledIdentifiers.has(config.identifier)) {
+      await registerNotificationConfig(config);
     }
-  });
-
-  return notScheduledNotifications;
+  }
 };
 
-export const registerReccurentNotifications = async () => {
-  const notScheduledNotifications =
-    await checkReccurentNotificationsRegistration();
-
-  Object.values(notScheduledNotifications).forEach(({ frequency, ...body }) => {
-    if (frequency === "weekly")
-      registerWeeklyNotification(body as WeeklyNotification);
-    else registerMonthlyNotification(body as MonthlyNotification);
-  });
-};
+// Kept as a compatibility alias for existing callers.
+export const registerReccurentNotifications = registerNotifications;
 
 export const dismissAllNotifications = async () => {
   try {
+    await Notifications.cancelAllScheduledNotificationsAsync();
     await Notifications.dismissAllNotificationsAsync();
   } catch (e) {
     console.error(e);
@@ -171,26 +329,42 @@ export const useNotificationResponse = () => {
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   useEffect(() => {
-    if (lastNotificationResponse) {
-      router.push(
-        ("good-practices/" +
-          lastNotificationResponse.notification.request.content.data
-            .uri) as Href,
-      );
+    const data = lastNotificationResponse?.notification.request.content
+      .data as NotificationData | undefined;
+
+    if (!data) return;
+
+    if (data.type === "celebration" && data.month && data.day) {
+      router.push({
+        pathname: "/events/celebration",
+        params: {
+          celebrationIndex: String(data.index ?? 0),
+          month: String(data.month),
+          day: String(data.day),
+        },
+      });
+    } else if (data.type === "historical" && data.month && data.day) {
+      router.push({
+        pathname: "/events/historical/[uri]",
+        params: {
+          uri: "event",
+          historicalIndex: String(data.index ?? 0),
+          month: String(data.month),
+          day: String(data.day),
+        },
+      });
+    } else if (data.uri) {
+      router.push(("/events/reccurent/" + data.uri) as Href);
     }
   }, [lastNotificationResponse]);
 };
 
 export const registerTestNotification = async () => {
-  const currentDate = new Date();
-  const notificationDate = new Date();
-  notificationDate.setSeconds(currentDate.getSeconds() + 10);
-
   await registerNotification(
     {
       title: "Test notification",
       body: "Here is the test notification",
-      data: { uri: "jumuah-prayer" },
+      data: { type: "recurrent", uri: "jumuah-prayer" },
     },
     {
       type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,

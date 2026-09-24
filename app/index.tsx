@@ -7,23 +7,31 @@ import {
   Celebrations as Celebrations,
   CalendarDate,
 } from "@/utils/dates";
-import { View, Text, Pressable } from "react-native";
+import {
+  getCalendarEvent,
+  getHistoricalEvents,
+  getRecommendedPractices,
+} from "@/utils/calendarEvents";
+import { ScrollView, View, Text, Pressable } from "react-native";
 import { ChevronLeft, ChevronRight, SettingsIcon } from "lucide-react-native";
 import { Link } from "expo-router";
 import {
   isNotificationEnabled,
-  registerReccurentNotifications,
+  registerNotifications,
   useNotificationResponse,
 } from "@/utils/notifications";
 import { useEffect, useMemo } from "react";
+import { createMMKV } from "react-native-mmkv";
 
 let notificationsRegisteringDone = false;
+const preferences = createMMKV();
 
-const setReccurentNotification = async () => {
+const setNotificationRegistration = async () => {
   const granted = await isNotificationEnabled();
+  const notificationsEnabled = preferences.getBoolean("preferences.notifications");
 
-  if (granted && !notificationsRegisteringDone) {
-    registerReccurentNotifications();
+  if (granted && notificationsEnabled && !notificationsRegisteringDone) {
+    await registerNotifications();
     notificationsRegisteringDone = true;
   }
 };
@@ -32,7 +40,7 @@ export default function CalendarScreen() {
   const todayDate = useMemo(() => new CalendarDate(), []);
 
   useEffect(() => {
-    setReccurentNotification();
+    setNotificationRegistration();
   }, []);
 
   useNotificationResponse();
@@ -47,12 +55,41 @@ export default function CalendarScreen() {
     );
   }, [todayDate, editDate]);
 
-  const calendarTable = getMonthTable(
-    monthProps.firstDayWeekPosition,
-    monthProps.length,
+  const calendarTable = useMemo(
+    () => getMonthTable(monthProps.firstDayWeekPosition, monthProps.length),
+    [monthProps.firstDayWeekPosition, monthProps.length],
+  );
+
+  const calendarTableWithEvents = useMemo(
+    () =>
+      calendarTable.map((row) =>
+        row.map((day) =>
+          day === null
+            ? null
+            : {
+                day,
+                event: getCalendarEvent(day, hijrahDate.month),
+              },
+        ),
+      ),
+    [calendarTable, hijrahDate.month],
   );
 
   const celebrationsList = Celebrations[hijrahDate.month]?.[hijrahDate.day];
+  const recommendedPractices = getRecommendedPractices(
+    hijrahDate.day,
+    hijrahDate.month,
+    hijrahDate.year,
+  );
+  const historicalEvents = getHistoricalEvents(
+    hijrahDate.day,
+    hijrahDate.month,
+  );
+
+  const eventBackgroundClasses = {
+    celebration: "bg-yellow-200",
+    historical: "bg-blue-200",
+  } as const;
 
   const onPreviousMonth = () => {
     const hijrahMonth = hijrahDate.month === 1 ? 12 : hijrahDate.month - 1;
@@ -78,7 +115,7 @@ export default function CalendarScreen() {
     );
 
   return (
-    <View className="my-2 flex-1 gap-y-3">
+    <View className="my-2 flex-1 gap-y-2">
       <View className="mx-5 flex-row items-center justify-between">
         <Link href="/settings" asChild>
           <Pressable
@@ -129,42 +166,38 @@ export default function CalendarScreen() {
           ))}
         </View>
 
-        <View className="flex-col gap-1">
-          {calendarTable.map((row, key) => (
-            <View key={key} className="flex-row justify-between">
-              {row.map((col, key) =>
-                col !== null ? (
-                  <Pressable
-                    key={key}
-                    className="size-8 justify-center items-center"
-                    onPress={() =>
-                      editDate(col, hijrahDate.month, hijrahDate.year)
-                    }
+        <View className="flex-col gap-2">
+          {calendarTableWithEvents.map((row, rowIndex) => (
+            <View key={rowIndex} className="flex-row justify-between">
+              {row.map((calendarDay, columnIndex) =>
+                calendarDay !== null ? (
+                  <View
+                    key={columnIndex}
+                    className={`w-10 items-center border-2 rounded-xl ${
+                      calendarDay.day === hijrahDate.day
+                        ? "border-gray-500"
+                        : "border-white"
+                    } ${
+                      calendarDay.event
+                        ? eventBackgroundClasses[calendarDay.event.type]
+                        : "bg-transparent"
+                    }`}
                   >
-                    {hijrahDate.day === col ? (
-                      <Text
-                        className={
-                          Celebrations[hijrahDate.month]?.[col] !== undefined
-                            ? "text-center align-middle size-7 rounded-xl border-[1.8px] text-brown-700 bg-brown-100 border-brown-500"
-                            : "text-center align-middle size-7 rounded-xl border-[1.8px] border-brown-500"
-                        }
-                      >
-                        {col}
-                      </Text>
-                    ) : (
-                      <Text
-                        className={
-                          Celebrations[hijrahDate.month]?.[col] !== undefined
-                            ? "text-center align-middle size-7 rounded-xl bg-brown-100 text-brown-700"
-                            : "text-center align-middle size-7"
-                        }
-                      >
-                        {col}
-                      </Text>
-                    )}
-                  </Pressable>
+                    <Pressable
+                      className="size-8 justify-center items-center"
+                      onPress={() =>
+                        editDate(
+                          calendarDay.day,
+                          hijrahDate.month,
+                          hijrahDate.year,
+                        )
+                      }
+                    >
+                      <Text>{calendarDay.day}</Text>
+                    </Pressable>
+                  </View>
                 ) : (
-                  <View key={key} className="size-8" />
+                  <View key={columnIndex} className="w-10 h-8" />
                 ),
               )}
             </View>
@@ -185,11 +218,27 @@ export default function CalendarScreen() {
           </Text>
         </View>
 
-        <View className="mt-4 p-2 gap-y-4">
+        <ScrollView
+          className="flex-1"
+          contentContainerClassName="mt-4 p-2 pb-8 gap-y-4"
+          showsVerticalScrollIndicator={false}
+        >
+          {recommendedPractices.map((practice) => (
+            <Link
+              href={`/events/reccurent/${practice.key}`}
+              key={practice.key}
+              className="px-2 py-4 rounded-xl bg-brown-100"
+            >
+              <Text className="text-base font-bold text-brown-700">
+                {practice.title}
+              </Text>
+            </Link>
+          ))}
+
           {celebrationsList !== undefined &&
             celebrationsList.map((celebration, key) => (
               <Link
-                href={`/celebration?celebrationIndex=${key}&month=${hijrahDate.month}&day=${hijrahDate.day}`}
+                href={`/events/celebration?celebrationIndex=${key}&month=${hijrahDate.month}&day=${hijrahDate.day}`}
                 key={key}
                 className="px-2 py-4 rounded-xl bg-brown-100"
               >
@@ -198,7 +247,27 @@ export default function CalendarScreen() {
                 </Text>
               </Link>
             ))}
-        </View>
+
+          {historicalEvents.map((historicalEvent, key) => (
+            <Link
+              href={{
+                pathname: "/events/historical/[uri]",
+                params: {
+                  uri: "event",
+                  historicalIndex: String(key),
+                  month: String(hijrahDate.month),
+                  day: String(hijrahDate.day),
+                },
+              }}
+              key={`${historicalEvent.title}-${key}`}
+              className="px-2 py-4 rounded-xl bg-blue-100"
+            >
+              <Text className="text-base font-bold text-blue-800">
+                {historicalEvent.title}
+              </Text>
+            </Link>
+          ))}
+        </ScrollView>
       </View>
     </View>
   );
