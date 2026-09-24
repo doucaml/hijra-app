@@ -6,6 +6,7 @@ import {
   registerNotifications,
   requestNotificationPermission,
 } from "@/utils/notifications";
+import Constants from "expo-constants";
 import { ExternalPathString, router } from "expo-router";
 import { ArrowLeftIcon, Bell } from "lucide-react-native";
 import { useCallback, useEffect, type ReactNode } from "react";
@@ -13,6 +14,7 @@ import { ScrollView, View, Text, Pressable } from "react-native";
 import { useMMKVBoolean } from "react-native-mmkv";
 
 const WEBSITE_PAGE = process.env.EXPO_PUBLIC_WEBSITE_URL;
+const APP_VERSION = Constants.expoConfig?.version ?? "Unknown";
 const PRIVACY_PAGE = `${WEBSITE_PAGE}/privacy-policy` as ExternalPathString;
 const TERMS_PAGE = `${WEBSITE_PAGE}/terms-of-use` as ExternalPathString;
 
@@ -126,7 +128,7 @@ export default function Screen() {
       </SettingsSection>
 
       <Text className="mt-8 text-center font-sans text-xs text-brown-400">
-        Hijra · Version 1.0.0
+        Hijra · Version {APP_VERSION}
       </Text>
     </ScrollView>
   );

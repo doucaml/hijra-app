@@ -1,4 +1,5 @@
 import { ExpoConfig, ConfigContext } from "expo/config";
+import packageJson from "./package.json";
 
 const APP_ID_PREFIX = "com.doukouss.hijra";
 
@@ -53,6 +54,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   slug: config.slug ?? "hijra",
   name: getName(config.name ?? "Hijra"),
+  version: packageJson.version,
   icon: icon ?? config.icon,
   android: {
     ...config.android,

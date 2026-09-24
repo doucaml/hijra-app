@@ -1,6 +1,9 @@
+import Constants from "expo-constants";
 import { router } from "expo-router";
 import { ArrowLeftIcon, CalendarDays, Bell, Smartphone } from "lucide-react-native";
 import { Pressable, ScrollView, Text, View } from "react-native";
+
+const APP_VERSION = Constants.expoConfig?.version ?? "Unknown";
 
 export default function Screen() {
   return (
@@ -61,7 +64,7 @@ export default function Screen() {
       </Section>
 
       <Text className="mt-4 text-center font-sans text-xs text-brown-400">
-        Hijra · Version 1.0.0
+        Hijra · Version {APP_VERSION}
       </Text>
     </ScrollView>
   );
