@@ -7,9 +7,9 @@ import {
   requestNotificationPermission,
 } from "@/utils/notifications";
 import { ExternalPathString, router } from "expo-router";
-import { ArrowLeftIcon } from "lucide-react-native";
-import { useCallback, useEffect } from "react";
-import { View, Text, Pressable } from "react-native";
+import { ArrowLeftIcon, Bell } from "lucide-react-native";
+import { useCallback, useEffect, type ReactNode } from "react";
+import { ScrollView, View, Text, Pressable } from "react-native";
 import { useMMKVBoolean } from "react-native-mmkv";
 
 const WEBSITE_PAGE = process.env.EXPO_PUBLIC_WEBSITE_URL;
@@ -65,44 +65,86 @@ export default function Screen() {
   const { notificationsEnabled, toggleNotificationsActivation } =
     useNotifications();
   return (
-    <View className="flex-1 gap-y-6 relative">
-      <View className="flex-row items-center">
-        <Pressable className="absolute z-10" onPress={() => router.back()}>
-          <ArrowLeftIcon />
+    <ScrollView
+      className="flex-1 bg-white"
+      contentContainerClassName="px-5 pb-8 pt-3"
+      showsVerticalScrollIndicator={false}
+    >
+      <View className="mb-8 flex-row items-center">
+        <Pressable
+          className="-ml-2 size-10 items-center justify-center"
+          onPress={() => router.back()}
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
+        >
+          <ArrowLeftIcon size={22} color="#432917" />
         </Pressable>
 
-        <Text className="text-center font-bold text-xl flex-1">Settings</Text>
+        <Text className="ml-2 font-sans-semibold text-[28px] leading-9 text-brown-800">
+          Settings
+        </Text>
       </View>
 
-      <View>
-        <Text className="text-lg text-gray-700">Preferences</Text>
+      <SettingsSection title="Preferences">
+        <View className="rounded-2xl bg-brown-50 px-4 py-3">
+          <View className="flex-row items-center">
+            <View className="mr-3 size-10 items-center justify-center rounded-full bg-brown-100">
+              <Bell size={19} color="#9E5F33" />
+            </View>
 
-        <View className="flex-row items-center justify-between p-2 my-1 h-12 rounded-lg bg-gray-200">
-          <Text>Allow notifications</Text>
-          <SwitchBtn
-            value={notificationsEnabled ?? false}
-            onChange={toggleNotificationsActivation}
-          />
+            <View className="flex-1 pr-3">
+              <Text className="font-sans-semibold text-base text-brown-800">
+                Allow notifications
+              </Text>
+              <Text className="mt-1 font-sans text-xs leading-4 text-brown-600">
+                Receive reminders for important dates and practices
+              </Text>
+            </View>
+
+            <SwitchBtn
+              value={notificationsEnabled ?? false}
+              onChange={toggleNotificationsActivation}
+            />
+          </View>
         </View>
-      </View>
+      </SettingsSection>
 
-      <View>
-        <Text className="text-lg text-gray-700">Legal</Text>
+      <SettingsSection title="Legal">
+        <View className="rounded-2xl bg-brown-50 p-2">
+          <ScreenLink href={PRIVACY_PAGE} title="Privacy policy" />
+          <View className="h-0.5 bg-brown-100" />
+          <ScreenLink href={TERMS_PAGE} title="Terms of use" />
+        </View>
+      </SettingsSection>
 
-        <ScreenLink href={PRIVACY_PAGE} title="Privacy policy" />
-        <ScreenLink href={TERMS_PAGE} title="Terms of use" />
-      </View>
+      <SettingsSection title="About">
+        <View className="rounded-2xl bg-brown-50 p-2">
+          <ScreenLink href="/settings/about" title="About Hijra" />
+          <View className="h-0.5 bg-brown-100" />
+          <ScreenLink href="/settings/contact" title="Contact" />
+        </View>
+      </SettingsSection>
 
-      <View>
-        <Text className="text-lg text-gray-700">About</Text>
+      <Text className="mt-8 text-center font-sans text-xs text-brown-400">
+        Hijra · Version 1.0.0
+      </Text>
+    </ScrollView>
+  );
+}
 
-        <ScreenLink href="/settings/about" title="About me" />
-        <ScreenLink href="/settings/contact" title="Contact" />
-      </View>
-
-      <View className="mt-auto mx-auto">
-        <Text>Version: 1.0.0</Text>
-      </View>
+function SettingsSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <View className="mb-7">
+      <Text className="mb-3 font-sans-semibold text-xs uppercase tracking-[1.5px] text-brown-600">
+        {title}
+      </Text>
+      {children}
     </View>
   );
 }

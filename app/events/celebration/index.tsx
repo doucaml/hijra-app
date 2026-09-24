@@ -1,6 +1,6 @@
 import { CalendarDate, Celebrations } from "@/utils/dates";
 import { useLocalSearchParams } from "expo-router";
-import { View, Text } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 export default function HolidayScreen() {
   const { celebrationIndex, day, month } = useLocalSearchParams();
@@ -16,20 +16,28 @@ export default function HolidayScreen() {
   const celebration = Celebrations[intMonth]?.[intDay][intCelebrationIndex];
 
   return (
-    <View className="flex-1 gap-y-4 p-4">
-      <View className="gap-y-2">
-        <Text className="text-xl text-center font-bold text-brown-700">
-          {celebration.title}
-        </Text>
+    <View className="flex-1 bg-brown-50 px-5 pt-5">
+      <Text className="font-sans-semibold text-[28px] leading-9 text-brown-800">
+        {celebration.title}
+      </Text>
 
-        <Text className="text-gray-700 font-light">
-          {calendarDate.hijrahDate.day} {calendarDate.hijrahDate.monthEnStr}{" "}
-          {calendarDate.hijrahDate.year} - {calendarDate.gregorianDate.day}{" "}
-          {calendarDate.gregorianDate.monthEnStr}{" "}
-          {calendarDate.gregorianDate.year}
+      <Text className="mt-3 font-sans text-sm leading-5 text-brown-600">
+        {calendarDate.hijrahDate.day} {calendarDate.hijrahDate.monthEnStr}{" "}
+        {calendarDate.hijrahDate.year} — {calendarDate.gregorianDate.day}{" "}
+        {calendarDate.gregorianDate.monthEnStr}{" "}
+        {calendarDate.gregorianDate.year}
+      </Text>
+
+      <View className="mb-7 mt-4 h-px bg-brown-200" />
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerClassName="pb-10"
+      >
+        <Text className="font-sans text-base leading-7 text-brown-800">
+          {celebration.description}
         </Text>
-      </View>
-      <Text className="font-light text-[17px]">{celebration.description}</Text>
+      </ScrollView>
     </View>
   );
 }

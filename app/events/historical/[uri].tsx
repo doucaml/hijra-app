@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import { View, Text } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { CalendarDate } from "@/utils/dates";
 import { getHistoricalEvents } from "@/utils/calendarEvents";
 
@@ -15,25 +15,29 @@ export default function HistoricalEventScreen() {
   const calendarDate = new CalendarDate(intDay, intMonth);
 
   return (
-    <View className="flex-1 gap-y-4 p-4">
-      <View className="gap-y-2">
-        <Text className="text-xl text-center font-bold text-blue-800">
-          {historicalEvent.title}
-        </Text>
-
-        <Text className="text-gray-700 font-light">
-          {historicalEvent.year} - {historicalEvent.gregorian}
-        </Text>
-
-        <Text className="text-gray-700 font-light">
-          {calendarDate.hijrahDate.day} {calendarDate.hijrahDate.monthEnStr}{" "}
-          {calendarDate.hijrahDate.year}
-        </Text>
-      </View>
-
-      <Text className="font-light text-[17px]">
-        {historicalEvent.description}
+    <View className="flex-1 bg-brown-50 px-5 pt-5">
+      <Text className="font-sans-semibold text-[28px] leading-9 text-brown-800">
+        {historicalEvent.title}
       </Text>
+
+      <Text className="mt-3 font-sans text-sm leading-5 text-brown-600">
+        {historicalEvent.year} — {historicalEvent.gregorian}
+      </Text>
+      <Text className="font-sans text-sm leading-5 text-brown-600">
+        {calendarDate.hijrahDate.day} {calendarDate.hijrahDate.monthEnStr}{" "}
+        {calendarDate.hijrahDate.year}
+      </Text>
+
+      <View className="mb-7 mt-4 h-px bg-brown-200" />
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerClassName="pb-10"
+      >
+        <Text className="font-sans text-base leading-7 text-brown-800">
+          {historicalEvent.description}
+        </Text>
+      </ScrollView>
     </View>
   );
 }
