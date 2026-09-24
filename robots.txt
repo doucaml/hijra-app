@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+Allow: /
+Sitemap: https://doucaml.github.io/hijra-app/sitemap.xml
