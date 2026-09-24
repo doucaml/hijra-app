@@ -5,10 +5,7 @@ import { CalendarDate, Celebrations } from "./dates";
 import { Href, router } from "expo-router";
 import { useEffect } from "react";
 
-export type NotificationEventType =
-  | "recurrent"
-  | "celebration"
-  | "historical";
+export type NotificationEventType = "recurrent" | "celebration" | "historical";
 
 type NotificationData = {
   type?: NotificationEventType;
@@ -19,22 +16,6 @@ type NotificationData = {
 };
 
 type NotificationFrequencyType = "weekly" | "monthly";
-
-type WeeklyNotification = {
-  identifier?: string;
-  content: Notifications.NotificationContentInput;
-  trigger: Omit<Notifications.WeeklyNotificationTrigger, "type">;
-};
-
-type MonthlyNotification = {
-  identifier?: string;
-  content: Notifications.NotificationContentInput;
-  trigger: {
-    day: number;
-    hour: number;
-    minute: number;
-  };
-};
 
 type NotificationConfig = {
   identifier: string;
@@ -182,7 +163,24 @@ const getRecurringNotificationConfigs = (): NotificationConfig[] =>
     (notification): NotificationConfig => {
       const { frequency, identifier, content, trigger } = notification;
 
-    if (frequency === "weekly") {
+      if (frequency === "weekly") {
+        return {
+          identifier,
+          content: {
+            ...content,
+            data: {
+              type: "recurrent" as const,
+              ...(content.data as Record<string, unknown>),
+            },
+          },
+          trigger: {
+            ...trigger,
+            type: Notifications.SchedulableTriggerInputTypes.WEEKLY,
+          },
+          frequency,
+        };
+      }
+
       return {
         identifier,
         content: {
@@ -193,32 +191,15 @@ const getRecurringNotificationConfigs = (): NotificationConfig[] =>
           },
         },
         trigger: {
-          ...trigger,
-          type: Notifications.SchedulableTriggerInputTypes.WEEKLY,
+          date: getNextMonthlyOccurrence(
+            trigger.day,
+            trigger.hour,
+            trigger.minute,
+          ),
+          type: Notifications.SchedulableTriggerInputTypes.DATE,
         },
         frequency,
       };
-    }
-
-    return {
-      identifier,
-      content: {
-        ...content,
-        data: {
-          type: "recurrent" as const,
-          ...(content.data as Record<string, unknown>),
-        },
-      },
-      trigger: {
-        date: getNextMonthlyOccurrence(
-          trigger.day,
-          trigger.hour,
-          trigger.minute,
-        ),
-        type: Notifications.SchedulableTriggerInputTypes.DATE,
-      },
-      frequency,
-    };
     },
   );
 
@@ -329,8 +310,8 @@ export const useNotificationResponse = () => {
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   useEffect(() => {
-    const data = lastNotificationResponse?.notification.request.content
-      .data as NotificationData | undefined;
+    const data = lastNotificationResponse?.notification.request.content.data as
+      NotificationData | undefined;
 
     if (!data) return;
 
