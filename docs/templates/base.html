@@ -3,34 +3,49 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Hijra is a simple, private way to explore the Hijri calendar and meaningful dates." />
         <link rel="icon" type="image/png" href="{{ get_url(path="favicon.png") }}">
         <link rel="stylesheet" href="{{ get_url(path="style.css") }}">
-        <title>{% block title %}{% endblock %} - Hijra</title>
+        <title>{% block title %}{% endblock %} · Hijra</title>
     </head>
     <body>
-        <header>
-            <a href="{{ config.base_url }}" id="logo-div">
-                <img src="{{ get_url(path="favicon.png") }}" alt="Logo">
-                Hijra
-            </a>
+        <a class="skip-link" href="#main-content">Skip to content</a>
 
-            <nav>
-                {% set privacy = get_page(path="privacy-policy.md") %}
-                <a href="{{ privacy.permalink }}">Privacy policy</a>
+        <header class="site-header">
+            <div class="container header-inner">
+                <a href="{{ config.base_url }}" class="brand" aria-label="Hijra home">
+                    <img src="{{ get_url(path="favicon.png") }}" alt="" width="40" height="40">
+                    <span>Hijra</span>
+                </a>
 
-                {% set terms = get_page(path="terms-of-use.md") %}
-                <a href="{{ terms.permalink }}">Terms of use</a>
+                <nav class="site-nav" aria-label="Main navigation">
+                    {% set privacy = get_page(path="privacy-policy.md") %}
+                    <a href="{{ privacy.permalink }}">Privacy</a>
 
-                <a href="https://github.com/doucaml/hijra-app">GitHub</a>
-            </nav>
+                    {% set terms = get_page(path="terms-of-use.md") %}
+                    <a href="{{ terms.permalink }}">Terms</a>
+
+                    <a href="https://github.com/doucaml/hijra-app" class="nav-action">GitHub <span aria-hidden="true">↗</span></a>
+                </nav>
+            </div>
         </header>
 
-        <main>
+        <main id="main-content">
             {% block content %}{% endblock %}
         </main>
 
-        <!--<footer>
-            <p>Made with Zola</p>
-        </footer>-->
+        <footer class="site-footer">
+            <div class="container footer-inner">
+                <div>
+                    <a href="{{ config.base_url }}" class="footer-brand">Hijra</a>
+                    <p>A simple way to explore the Hijri calendar.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/doucaml/hijra-app">GitHub <span aria-hidden="true">↗</span></a>
+                    <a href="{{ privacy.permalink }}">Privacy policy</a>
+                    <a href="{{ terms.permalink }}">Terms of use</a>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>
