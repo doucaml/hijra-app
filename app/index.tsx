@@ -87,7 +87,7 @@ export default function CalendarScreen() {
   );
 
   const eventBackgroundClasses = {
-    celebration: "bg-yellow-200",
+    celebration: "bg-brown-200",
     historical: "bg-blue-200",
   } as const;
 
@@ -227,9 +227,9 @@ export default function CalendarScreen() {
             <Link
               href={`/events/reccurent/${practice.key}`}
               key={practice.key}
-              className="px-2 py-4 rounded-xl bg-brown-100"
+              className="px-2 py-4 rounded-xl bg-green-100"
             >
-              <Text className="text-base font-bold text-brown-700">
+              <Text className="text-base font-bold text-green-700">
                 {practice.title}
               </Text>
             </Link>
